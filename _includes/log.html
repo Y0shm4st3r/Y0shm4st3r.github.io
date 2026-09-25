@@ -1,0 +1,23 @@
+{%- comment -%} Bitácora filtrable. Tarjetas en _data/incidents.yml. {%- endcomment -%}
+{%- assign lang = include.lang -%}{%- assign u = site.data.ui.log -%}
+<div class="filters" role="group">
+  <button type="button" class="fbtn" data-f="all" aria-pressed="true">{{ u.all[lang] }} <span>{{ site.data.incidents | size }}</span></button>
+  {%- for d in u.domains %}
+  {%- assign n = site.data.incidents | where: 'domain', d[0] | size %}
+  {%- if n > 0 %}<button type="button" class="fbtn" data-f="{{ d[0] }}" aria-pressed="false">{{ d[1][lang] }} <span>{{ n }}</span></button>{% endif %}
+  {%- endfor %}
+</div>
+<div class="log">
+  {%- for e in site.data.incidents %}{% assign x = e[lang] %}
+  <article class="entry" data-d="{{ e.domain }}">
+    <div class="en-top"><span class="en-dom">{{ u.domains[e.domain][lang] }}</span><span class="st st-{{ e.status }}">{{ u.status[e.status][lang] }}</span></div>
+    <h4>{% include inline.html v=x.title %}</h4>
+    <dl>
+      <dt>{{ u.symptom[lang] }}</dt><dd>{% include inline.html v=x.symptom %}</dd>
+      <dt>{{ u.how[lang] }}</dt><dd>{% include inline.html v=x.how %}</dd>
+      <dt>{{ u.outcome[lang] }}</dt><dd>{% include inline.html v=x.outcome %}</dd>
+    </dl>
+    <div class="en-foot"><span class="en-layers">{{ e.layers }}</span>{% if e.standards and e.standards != '' %}<span>{{ e.standards }}</span>{% endif %}</div>
+  </article>
+  {%- endfor %}
+</div>

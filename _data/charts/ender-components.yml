@@ -1,0 +1,91 @@
+# Datos de un gráfico de barras. value = largo de la barra (escala 0..max).
+# cells = columnas de la tabla accesible después del nombre; usa {en, es} si el texto cambia por idioma.
+
+title:
+  en: What the 1.938 mm is actually made of
+  es: De qué está hecho realmente ese 1.938 mm
+sub:
+  en: |-
+    Peak-to-peak contribution of each component, in millimetres. The parts do not add up to 1.938 - the two tilts reinforce each other at the corners - but the ranking is what matters: the only component I cannot remove is the smallest one.
+  es: |-
+    Contribución pico a pico de cada componente, en milímetros. Las partes no suman 1.938 - las dos inclinaciones se refuerzan en las esquinas - pero lo que importa es el orden: el único componente que no puedo quitar es el más pequeño.
+legend:
+- series: s1
+  label:
+    en: Tilt along X - correctable
+    es: Inclinación en X - corregible
+- series: s2
+  label:
+    en: Tilt along Y - correctable
+    es: Inclinación en Y - corregible
+- series: s3
+  label:
+    en: Non-planar residual - permanent
+    es: Residuo no plano - permanente
+axis:
+  en: millimetres peak-to-peak - scale 0 to 2.0 - raw mesh range 1.938 mm
+  es: |-
+    milímetros pico a pico - escala 0 a 2.0 - rango crudo del mesh 1.938 mm
+columns:
+  en:
+  - Component
+  - Nature
+  - Slope
+  - Peak-to-peak
+  - Share of range
+  es:
+  - Componente
+  - Naturaleza
+  - Pendiente
+  - Pico a pico
+  - Del rango
+hide:
+  en: Hide data table
+  es: Ocultar tabla de datos
+max: 2.0
+rows:
+- series: s1
+  value: 1.752
+  label: 1.752 mm
+  name:
+    en: Tilt along X
+    es: Inclinación en X
+  sub:
+    en: gantry / bed screws
+    es: pórtico / tornillos
+  cells:
+  - en: correctable
+    es: corregible
+  - 9.79 mm/m
+  - 1.752 mm
+  - 90.4 %
+- series: s2
+  value: 0.184
+  label: 0.184 mm
+  name:
+    en: Tilt along Y
+    es: Inclinación en Y
+  sub:
+    en: bed screws
+    es: tornillos de cama
+  cells:
+  - en: correctable
+    es: corregible
+  - 1.02 mm/m
+  - 0.184 mm
+  - 9.5 %
+- series: s3
+  value: 0.163
+  label: 0.163 mm
+  name:
+    en: Non-planar residual
+    es: Residuo no plano
+  sub:
+    en: stays after levelling
+    es: queda tras nivelar
+  cells:
+  - en: permanent
+    es: permanente
+  - "-"
+  - 0.163 mm
+  - 8.4 %

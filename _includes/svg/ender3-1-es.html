@@ -1,0 +1,69 @@
+<svg aria-label="Diagrama de tres capas de mejora: extrusión, eje Z y control, cada una con el síntoma original, el cambio hecho y el efecto secundario que introdujo" role="img" viewbox="0 0 900 566">
+<defs>
+<marker id="p3d-ar-es" markerheight="7" markerwidth="7" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0,0 L10,5 L0,10 z" fill="var(--rule)"></path></marker>
+</defs>
+<text class="d-s" x="24" y="20">SÍNTOMA OBSERVADO</text>
+<text class="d-s" x="318" y="20">CAMBIO HECHO</text>
+<text class="d-s" x="612" y="20">RESTRICCIÓN QUE CREÓ</text>
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="256" x="24" y="32"></rect>
+<text class="d-t" x="42" y="56">Extrusión</text>
+<text class="d-s" x="42" y="76">Hilos y grumos con PETG. La</text>
+<text class="d-s" x="42" y="92">retracción no era confiable a</text>
+<text class="d-s" x="42" y="108">través de un tubo bowden largo.</text>
+<line marker-end="url(#p3d-ar-es)" stroke="var(--rule)" x1="284" x2="312" y1="78" y2="78"></line>
+<rect fill="var(--accent-soft)" height="92" rx="5" stroke="var(--accent)" width="256" x="318" y="32"></rect>
+<text class="d-t" x="336" y="56">Conversión a direct drive</text>
+<text class="d-s" x="336" y="76">Extrusor montado sobre el carro.</text>
+<text class="d-s" x="336" y="92">Pasos/mm recalibrados a 93 para</text>
+<text class="d-s" x="336" y="108">la nueva relación de engranaje.</text>
+<line marker-end="url(#p3d-ar-es)" stroke="var(--rule)" x1="578" x2="606" y1="78" y2="78"></line>
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="264" x="612" y="32"></rect>
+<text class="d-t" x="630" y="56">La retracción quedó mal ajustada</text>
+<text class="d-s" x="630" y="76">El recorrido del filamento se</text>
+<text class="d-s" x="630" y="92">acortó un orden de magnitud, así</text>
+<text class="d-s" x="630" y="108">que el valor heredado sobre-retrae.</text>
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="256" x="24" y="148"></rect>
+<text class="d-t" x="42" y="172">Eje Z</text>
+<text class="d-s" x="42" y="192">Pórtico sin apoyo en un extremo.</text>
+<text class="d-s" x="42" y="208">La altura de la boquilla cambiaba</text>
+<text class="d-s" x="42" y="224">según la posición en el riel X.</text>
+<line marker-end="url(#p3d-ar-es)" stroke="var(--rule)" x1="284" x2="312" y1="194" y2="194"></line>
+<rect fill="var(--accent-soft)" height="92" rx="5" stroke="var(--accent)" width="256" x="318" y="148"></rect>
+<text class="d-t" x="336" y="172">Segundo husillo en Z</text>
+<text class="d-s" x="336" y="192">Los dos extremos del pórtico</text>
+<text class="d-s" x="336" y="208">accionados. Dos motores en un solo</text>
+<text class="d-s" x="336" y="224">driver mediante un cable splitter.</text>
+<line marker-end="url(#p3d-ar-es)" stroke="var(--rule)" x1="578" x2="606" y1="194" y2="194"></line>
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="264" x="612" y="148"></rect>
+<text class="d-t" x="630" y="172">Alineación automática imposible</text>
+<text class="d-s" x="630" y="192">Un driver no puede llevar los dos</text>
+<text class="d-s" x="630" y="208">motores a posiciones distintas, así</text>
+<text class="d-s" x="630" y="224">que la rutina G34 nunca puede correr.</text>
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="256" x="24" y="264"></rect>
+<text class="d-t" x="42" y="288">Control</text>
+<text class="d-s" x="42" y="308">Firmware cerrado, sin soporte de</text>
+<text class="d-s" x="42" y="324">sonda, y ningún binario publicado</text>
+<text class="d-s" x="42" y="340">sirve para esta placa con LCD mono.</text>
+<line marker-end="url(#p3d-ar-es)" stroke="var(--rule)" x1="284" x2="312" y1="310" y2="310"></line>
+<rect fill="var(--accent-soft)" height="92" rx="5" stroke="var(--accent)" width="256" x="318" y="264"></rect>
+<text class="d-t" x="336" y="288">Placa nueva, firmware compilado</text>
+<text class="d-s" x="336" y="308">Controlador de 32 bits, firmware</text>
+<text class="d-s" x="336" y="324">abierto, diff de 12 líneas - cuatro</text>
+<text class="d-s" x="336" y="340">solo para seleccionar la pantalla.</text>
+<line marker-end="url(#p3d-ar-es)" stroke="var(--rule)" x1="578" x2="606" y1="310" y2="310"></line>
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="264" x="612" y="264"></rect>
+<text class="d-t" x="630" y="288">Los ajustes sobreviven al flasheo</text>
+<text class="d-s" x="630" y="308">El estado persistido sobrescribe los</text>
+<text class="d-s" x="630" y="324">valores compilados al arrancar, así</text>
+<text class="d-s" x="630" y="340">que hay que auditarlo, no asumirlo.</text>
+<line marker-end="url(#p3d-ar-es)" stroke="var(--accent)" stroke-width="2" x1="450" x2="450" y1="356" y2="392"></line>
+<rect fill="var(--surface)" height="88" rx="6" stroke="var(--accent)" stroke-width="1.5" width="852" x="24" y="392"></rect>
+<text class="d-t" x="44" y="418">Lo que absorbe la capa de control</text>
+<text class="d-s" x="44" y="440">El nivelado automático sondea una rejilla de 5 × 5 y construye una malla de compensación, así que los ~0.13 mm de error no</text>
+<text class="d-s" x="44" y="456">plano que ningún ajuste mecánico puede quitar se corrigen por software en cada capa, en vez de perseguirse con las perillas.</text>
+<text class="d-a" x="44" y="472">Las capas mecánicas fijan el piso. La capa de control decide cuánto de ese piso llega a la pieza.</text>
+<rect fill="var(--surface-2)" height="56" rx="5" stroke="var(--grid)" width="852" x="24" y="496"></rect>
+<text class="d-s" x="44" y="512">Cadena de verificación: SHA-256 de los dos archivos de configuración →</text>
+<text class="d-s" x="44" y="528">SHA-256 del binario compilado → fecha de compilación que reporta la máquina.</text>
+<text class="d-s" x="44" y="544">Cualquier afirmación de esta página se puede rastrear desde un archivo fuente hasta el firmware que está ejecutándose.</text>
+</svg>

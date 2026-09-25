@@ -1,0 +1,18 @@
+{%- assign m = include.m -%}{%- assign lang = include.lang -%}
+<header class="mast">
+  <div class="eyebrow">{{ m.eyebrow[lang] }}</div>
+  <h1>{{ m.h1[lang] }}</h1>
+  <p class="thesis">{% include inline.html v=m.thesis lang=lang %}</p>
+  <div class="byline">
+    <div><b>{{ site.author }}</b> - {{ site.data.ui.footer_degree[lang] }}</div>
+    {%- if m.by2 %}<div>{{ m.by2[lang] }}</div>{% endif %}
+    {%- if m.repo %}<div class="flinks"><a href="{{ site.links[m.repo] }}">{{ m.repo_label[lang] }}</a></div>{% endif %}
+  </div>
+  {%- if m.kpis %}
+  <div class="kpis">
+    {%- for k in m.kpis %}
+    <div class="kpi"><span class="v">{% include kv.html v=k.v %}</span><span class="l">{{ k.l[lang] }}</span></div>
+    {%- endfor %}
+  </div>
+  {%- endif %}
+</header>

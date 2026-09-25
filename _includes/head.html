@@ -1,0 +1,31 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+{%- assign t = page.title | default: site.title -%}
+<title>{% if page.url == '/' %}{{ site.title }}{% else %}{{ t }} · {{ site.title }}{% endif %}</title>
+<meta name="description" content="{{ page.description | default: site.description | strip | xml_escape }}">
+<meta name="author" content="{{ site.author }}">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F3F3F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+<link rel="alternate" hreflang="en" href="{{ page.url | absolute_url }}?lang=en">
+<link rel="alternate" hreflang="es" href="{{ page.url | absolute_url }}?lang=es">
+<link rel="alternate" hreflang="x-default" href="{{ page.url | absolute_url }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_PR">
+<meta property="og:title" content="{{ t | xml_escape }}">
+<meta property="og:description" content="{{ page.description | default: site.description | strip | xml_escape }}">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta property="og:image" content="{{ page.og_image | default: '/assets/og/home.png' | absolute_url }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
+<link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{{ '/assets/apple-touch-icon.png' | relative_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">

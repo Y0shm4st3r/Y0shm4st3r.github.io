@@ -1,0 +1,44 @@
+# Nombres de las 12 capas (y "u" = causa no hallada) usados por la matriz.
+
+keys:
+- '01'
+- '02'
+- '03'
+- '04'
+- '05'
+- '06'
+- '07'
+- 08
+- 09
+- '10'
+- '11'
+- '12'
+- u
+en:
+- Power
+- Hardware
+- Firmware
+- Boot
+- Kernel / OS
+- Storage
+- Link (L2)
+- IP (L3)
+- Transport (L4)
+- Protocol
+- Application
+- User
+- Not found
+es:
+- Energía
+- Hardware
+- Firmware
+- Arranque
+- Kernel / SO
+- Almacenamiento
+- Enlace (L2)
+- IP (L3)
+- Transporte (L4)
+- Protocolo
+- Aplicación
+- Usuario
+- Sin hallar

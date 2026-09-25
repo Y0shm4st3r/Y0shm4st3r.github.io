@@ -1,0 +1,9 @@
+{%- comment -%} Calcula los números del registro de incidentes (_data/layer_log.yml). Se usa en KPIs y textos. {%- endcomment -%}
+{%- assign stats_total = site.data.layer_log | size -%}
+{%- assign stats_same = 0 -%}{%- assign stats_crossed = 0 -%}{%- assign stats_nocause = 0 -%}{%- assign stats_open = 0 -%}
+{%- for e in site.data.layer_log -%}
+  {%- if e.s == e.c -%}{%- assign stats_same = stats_same | plus: 1 -%}
+  {%- elsif e.c != 'u' -%}{%- assign stats_crossed = stats_crossed | plus: 1 -%}{%- endif -%}
+  {%- if e.rc == 'n' -%}{%- assign stats_nocause = stats_nocause | plus: 1 -%}{%- endif -%}
+  {%- if e.st == 'open' or e.st == 'aban' -%}{%- assign stats_open = stats_open | plus: 1 -%}{%- endif -%}
+{%- endfor -%}

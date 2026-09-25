@@ -1,0 +1,71 @@
+<svg aria-label="Diagram of three upgrade layers: extrusion, Z axis and control, each showing the original symptom, the change made, and the side effect it introduced" role="img" viewbox="0 0 900 548">
+<defs>
+<marker id="p3d-ar-en" markerheight="7" markerwidth="7" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0,0 L10,5 L0,10 z" fill="var(--rule)"></path></marker>
+</defs>
+<text class="d-s" x="24" y="20">SYMPTOM OBSERVED</text>
+<text class="d-s" x="318" y="20">CHANGE MADE</text>
+<text class="d-s" x="612" y="20">CONSTRAINT IT CREATED</text>
+<!-- layer 1 -->
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="256" x="24" y="32"></rect>
+<text class="d-t" x="42" y="56">Extrusion</text>
+<text class="d-s" x="42" y="76">PETG stringing and blobbing.</text>
+<text class="d-s" x="42" y="92">Retraction unreliable through</text>
+<text class="d-s" x="42" y="108">a long bowden tube.</text>
+<line marker-end="url(#p3d-ar-en)" stroke="var(--rule)" x1="284" x2="312" y1="78" y2="78"></line>
+<rect fill="var(--accent-soft)" height="92" rx="5" stroke="var(--accent)" width="256" x="318" y="32"></rect>
+<text class="d-t" x="336" y="56">Direct drive conversion</text>
+<text class="d-s" x="336" y="76">Extruder moved onto the</text>
+<text class="d-s" x="336" y="92">carriage. Steps/mm recalibrated</text>
+<text class="d-s" x="336" y="108">to 93 for the new gearing.</text>
+<line marker-end="url(#p3d-ar-en)" stroke="var(--rule)" x1="578" x2="606" y1="78" y2="78"></line>
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="264" x="612" y="32"></rect>
+<text class="d-t" x="630" y="56">Retraction distance is now wrong</text>
+<text class="d-s" x="630" y="76">The filament path shortened by</text>
+<text class="d-s" x="630" y="92">an order of magnitude, so the</text>
+<text class="d-s" x="630" y="108">inherited value over-retracts.</text>
+<!-- layer 2 -->
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="256" x="24" y="148"></rect>
+<text class="d-t" x="42" y="172">Z axis</text>
+<text class="d-s" x="42" y="192">Gantry unsupported on one side.</text>
+<text class="d-s" x="42" y="208">Nozzle height changed with</text>
+<text class="d-s" x="42" y="224">position along the X rail.</text>
+<line marker-end="url(#p3d-ar-en)" stroke="var(--rule)" x1="284" x2="312" y1="194" y2="194"></line>
+<rect fill="var(--accent-soft)" height="92" rx="5" stroke="var(--accent)" width="256" x="318" y="148"></rect>
+<text class="d-t" x="336" y="172">Second Z leadscrew</text>
+<text class="d-s" x="336" y="192">Both ends of the gantry driven.</text>
+<text class="d-s" x="336" y="208">Two motors on one driver</text>
+<text class="d-s" x="336" y="224">through a splitter cable.</text>
+<line marker-end="url(#p3d-ar-en)" stroke="var(--rule)" x1="578" x2="606" y1="194" y2="194"></line>
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="264" x="612" y="148"></rect>
+<text class="d-t" x="630" y="172">Automatic alignment unavailable</text>
+<text class="d-s" x="630" y="192">One driver cannot move the two</text>
+<text class="d-s" x="630" y="208">motors independently, so Marlin's</text>
+<text class="d-s" x="630" y="224">G34 routine can never run.</text>
+<!-- layer 3 -->
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="256" x="24" y="264"></rect>
+<text class="d-t" x="42" y="288">Control</text>
+<text class="d-s" x="42" y="308">Closed firmware, no probe support,</text>
+<text class="d-s" x="42" y="324">and no prebuilt release exists for</text>
+<text class="d-s" x="42" y="340">this board with a monochrome LCD.</text>
+<line marker-end="url(#p3d-ar-en)" stroke="var(--rule)" x1="284" x2="312" y1="310" y2="310"></line>
+<rect fill="var(--accent-soft)" height="92" rx="5" stroke="var(--accent)" width="256" x="318" y="264"></rect>
+<text class="d-t" x="336" y="288">New board + build from source</text>
+<text class="d-s" x="336" y="308">32-bit controller, open firmware,</text>
+<text class="d-s" x="336" y="324">12-line diff - four of them just</text>
+<text class="d-s" x="336" y="340">to select the right display.</text>
+<line marker-end="url(#p3d-ar-en)" stroke="var(--rule)" x1="578" x2="606" y1="310" y2="310"></line>
+<rect fill="var(--surface)" height="92" rx="5" stroke="var(--grid)" width="264" x="612" y="264"></rect>
+<text class="d-t" x="630" y="288">Settings now outlive the flash</text>
+<text class="d-s" x="630" y="308">Persisted state overrides the</text>
+<text class="d-s" x="630" y="324">compiled defaults at boot, so it</text>
+<text class="d-s" x="630" y="340">has to be audited, not assumed.</text>
+<line marker-end="url(#p3d-ar-en)" stroke="var(--accent)" stroke-width="2" x1="450" x2="450" y1="356" y2="392"></line>
+<rect fill="var(--surface)" height="88" rx="6" stroke="var(--accent)" stroke-width="1.5" width="852" x="24" y="392"></rect>
+<text class="d-t" x="44" y="418">What the control layer now absorbs</text>
+<text class="d-s" x="44" y="440">Automatic bed levelling probes a 5 × 5 grid and builds a compensation mesh, so the ~0.13 mm of non-planar error that</text>
+<text class="d-s" x="44" y="456">no mechanical adjustment can remove is corrected in software on every layer, instead of being chased with the knobs.</text>
+<text class="d-a" x="44" y="472">The mechanical layers set the floor. The control layer decides how much of that floor reaches the part.</text>
+<rect fill="var(--surface-2)" height="40" rx="5" stroke="var(--grid)" width="852" x="24" y="496"></rect>
+<text class="d-s" x="44" y="514">Verification chain: SHA-256 of both config files → SHA-256 of the compiled binary → build timestamp reported by the running machine.</text>
+<text class="d-s" x="44" y="530">Every claim on this page can be traced from a source file to the firmware that is actually executing.</text>
+</svg>

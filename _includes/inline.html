@@ -1,0 +1,10 @@
+{%- comment -%}
+  Markdown en línea (**negrita**, *cursiva*, `código`) sin <p>, más los números automáticos del registro.
+  Uso: include inline.html v=texto_o_objeto lang=lang   (si v tiene en/es, toma el idioma)
+{%- endcomment -%}
+{%- if include.v.en or include.v.es -%}{%- assign _t = include.v[include.lang] -%}{%- else -%}{%- assign _t = include.v -%}{%- endif -%}
+{%- assign _t = _t | markdownify | remove: '<p>' | remove: '</p>' | strip -%}
+{%- assign _t = _t | replace: '{total}', stats_total | replace: '{same}', stats_same -%}
+{%- assign _t = _t | replace: '{crossed}', stats_crossed | replace: '{nocause}', stats_nocause -%}
+{%- assign _t = _t | replace: '{open}', stats_open -%}
+{{- _t -}}

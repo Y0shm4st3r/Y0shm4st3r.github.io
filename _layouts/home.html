@@ -1,0 +1,84 @@
+---
+layout: default
+---
+{%- include stats.html -%}
+{%- assign d = site.data.pages.home -%}
+{%- for lang in site.languages %}
+<div class="loc" data-loc="{{ lang }}" lang="{{ lang }}"{% unless forloop.first %} hidden{% endunless %}>
+<div class="wrap">
+  <header class="mast mast-home">
+    <div class="eyebrow">{{ d.mast.eyebrow[lang] }}</div>
+    <h1>{{ d.mast.h1[lang] }}</h1>
+    <p class="thesis">{% include inline.html v=d.mast.thesis lang=lang %}</p>
+    <div class="byline">
+      <div>{{ d.mast.byline[lang] }}</div>
+      <div class="flinks"><a href="{{ site.links.resume[lang] | relative_url }}" download>{{ d.contact.resume[lang] }}</a> · <a href="{{ site.links.github }}">GitHub</a> · <a href="{{ site.links.linkedin }}">LinkedIn</a></div>
+    </div>
+  </header>
+
+  <hr class="hr">
+
+  <section id="work-{{ lang }}">
+    <div class="snum">{{ d.intro.snum[lang] }}</div>
+    <h2>{{ d.intro.h2[lang] }}</h2>
+    <p>{% include inline.html v=d.intro.p lang=lang %}</p>
+    <div class="proj">
+      {%- for p in d.projects %}
+      <a class="proj-card" href="{{ p.href | relative_url }}">
+        <span class="proj-eyebrow">{{ p.eyebrow[lang] }}</span>
+        <span class="proj-title">{{ p.title[lang] }}</span>
+        <span class="proj-blurb">{% include inline.html v=p.blurb lang=lang %}</span>
+        <span class="proj-stats">
+          {%- for st in p.stats %}<span><b>{% include kv.html v=st.v %}</b>{{ st.l[lang] }}</span>{% endfor -%}
+        </span>
+        <span class="proj-go" aria-hidden="true">→</span>
+      </a>
+      {%- endfor %}
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <section id="method-{{ lang }}">
+    <div class="snum">{{ d.method.snum[lang] }}</div>
+    <h2>{{ d.method.h2[lang] }}</h2>
+    <div class="prac">
+      {%- for it in d.method.items %}
+      <div><h4>{{ it.h[lang] }}</h4><p>{% include inline.html v=it.p lang=lang %}</p></div>
+      {%- endfor %}
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <section id="stack-{{ lang }}">
+    <div class="snum">{{ d.stack.snum[lang] }}</div>
+    <h2>{{ d.stack.h2[lang] }}</h2>
+    <div class="stack">
+      {%- for g in d.stack.groups %}
+      <div class="sgroup"><div class="sl">{{ g.l[lang] }}</div><div class="chips">
+        {%- for c in g.chips %}<span class="chip">{% include t.html v=c lang=lang %}</span>{% endfor -%}
+      </div></div>
+      {%- endfor %}
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <section id="contact-{{ lang }}">
+    <div class="snum">{{ d.contact.snum[lang] }}</div>
+    <h2>{{ d.contact.h2[lang] }}</h2>
+    <p>{% include inline.html v=d.contact.p lang=lang %}</p>
+    <div class="contact">
+      <a class="cbtn pri" href="{{ site.links.resume[lang] | relative_url }}" download>{{ d.contact.resume[lang] }}</a>
+      <a class="cbtn" href="mailto:{{ site.links.email }}">{{ d.contact.email[lang] }}</a>
+      <a class="cbtn" href="{{ site.links.linkedin }}">LinkedIn</a>
+      <a class="cbtn" href="{{ site.links.github }}">GitHub</a>
+    </div>
+    <p class="cmail">{{ site.links.email }}</p>
+  </section>
+
+  {% include footer.html lang=lang %}
+</div>
+</div>
+{%- endfor %}

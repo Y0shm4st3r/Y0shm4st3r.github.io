@@ -1,0 +1,25 @@
+{%- comment -%} Una sección de página a partir de _data/pages/*.yml. Tipos de bloque: p, h3, fig, figcap, case, chart, matrix, log. {%- endcomment -%}
+{%- assign s = include.s -%}{%- assign lang = include.lang -%}
+<section id="{{ s.id }}-{{ lang }}">
+  <div class="snum">{{ s.snum[lang] }}</div>
+  <h2>{% include inline.html v=s.h2 lang=lang %}</h2>
+  {%- for b in s.blocks %}
+  {%- if b.p %}
+  <p>{% include inline.html v=b.p lang=lang %}</p>
+  {%- elsif b.h3 %}
+  <h3 class="sub-h">{% include inline.html v=b.h3 lang=lang %}</h3>
+  {%- elsif b.figcap %}
+  <p class="figcap">{% include inline.html v=b.figcap lang=lang %}</p>
+  {%- elsif b.fig %}
+  {% include fig.html svg=b.fig.svg head=b.fig.head lang=lang %}
+  {%- elsif b.case %}
+  {% include case.html c=b.case lang=lang %}
+  {%- elsif b.chart %}
+  {% include chart.html id=b.chart lang=lang %}
+  {%- elsif b.matrix %}
+  {% include matrix.html m=b.matrix lang=lang %}
+  {%- elsif b.log %}
+  {% include log.html lang=lang %}
+  {%- endif %}
+  {%- endfor %}
+</section>

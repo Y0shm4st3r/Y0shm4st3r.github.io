@@ -1,0 +1,20 @@
+{%- comment -%} Caso: etiqueta, título, pasos (b = etiqueta, t = texto), gráficos/figuras intercalados y lección. {%- endcomment -%}
+{%- assign c = include.c[include.lang] -%}{%- assign lang = include.lang -%}
+<div class="case{% if include.c.style == 'open' %} case-open{% endif %}">
+  <div class="case-tag">{{ c.tag }}</div>
+  {%- if c.h3 %}<h3>{% include inline.html v=c.h3 %}</h3>{% endif %}
+  {%- for it in c.items %}
+  {%- if it.b %}
+  <div class="beat"><b>{{ it.b }}</b><span>{% include inline.html v=it.t %}</span></div>
+  {%- elsif it.chart %}
+  {% include chart.html id=it.chart lang=lang %}
+  {%- elsif it.fig %}
+  {% include fig.html svg=it.fig head=it.head lang=lang %}
+  {%- elsif it.figcap %}
+  <p class="figcap">{% include inline.html v=it.figcap %}</p>
+  {%- endif %}
+  {%- endfor %}
+  {%- if c.lesson and c.lesson != '' %}
+  <div class="lesson{% if include.c.style == 'open' %} lesson-open{% endif %}" data-label="{% if include.c.style == 'open' %}{{ site.data.ui.lesson_open[lang] }}{% else %}{{ site.data.ui.lesson[lang] }}{% endif %}">{% include inline.html v=c.lesson %}</div>
+  {%- endif %}
+</div>

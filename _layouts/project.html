@@ -1,0 +1,19 @@
+---
+layout: default
+---
+{%- include stats.html -%}
+{%- comment -%} Página de proyecto: todo el contenido sale de _data/pages/{{ page.data }}.yml {%- endcomment -%}
+{%- assign d = site.data.pages[page.data] -%}
+{%- for lang in site.languages %}
+<div class="loc" data-loc="{{ lang }}" lang="{{ lang }}"{% unless forloop.first %} hidden{% endunless %}>
+<div class="wrap">
+  {% include mast.html m=d.mast lang=lang %}
+  <hr class="hr">
+  {%- for s in d.sections %}
+  {% include section.html s=s lang=lang %}
+  {%- unless forloop.last %}<hr class="hr">{% endunless %}
+  {%- endfor %}
+  {% include footer.html lang=lang %}
+</div>
+</div>
+{%- endfor %}

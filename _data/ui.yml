@@ -1,0 +1,39 @@
+# Textos fijos de la interfaz (botones, etiquetas, pie de página).
+show_table: { en: Show data table, es: Ver tabla de datos }
+hide_table: { en: Hide data table, es: Ocultar tabla de datos }
+lesson: { en: What I took away, es: Lo que me llevo }
+lesson_open: { en: Where I am, es: Dónde estoy }
+next: { en: Next, es: Siguiente }
+home: { en: Home, es: Inicio }
+contents: { en: Contents, es: Contenido }
+footer_note:
+  en: Identifying details are removed on purpose; the technical content is complete.
+  es: Los datos identificables se omiten a propósito; el contenido técnico está completo.
+footer_degree:
+  en: Computer Engineering, UAGM Gurabo · Currently focused on Python
+  es: Ingeniería de Computadoras, UAGM Gurabo · Actualmente enfocado en Python
+matrix:
+  row: { en: "Symptom layer ↓", es: "Capa del síntoma ↓" }
+  col: { en: "Cause layer →", es: "Capa de la causa →" }
+  show: { en: Show as a list, es: Ver como lista }
+  hide: { en: Hide list, es: Ocultar lista }
+  symptom: { en: Symptom, es: Síntoma }
+  cause: { en: Cause, es: Causa }
+  incidents: { en: incidents, es: incidentes }
+  same: { en: same layer, es: misma capa }
+  crossed: { en: crossed layers, es: cruzó de capa }
+log:
+  all: { en: All, es: Todos }
+  domains:
+    net: { en: Network, es: Red }
+    lab: { en: Homelab, es: Homelab }
+    desk: { en: Linux desktop, es: Escritorio Linux }
+    lap: { en: Linux laptop, es: Laptop Linux }
+  symptom: { en: Symptom, es: Síntoma }
+  how: { en: How I found it, es: Cómo lo encontré }
+  outcome: { en: Outcome, es: Resultado }
+  status:
+    ok: { en: Resolved, es: Resuelto }
+    mit: { en: Mitigated, es: Mitigado }
+    open: { en: Open, es: Abierto }
+    aban: { en: Abandoned, es: Abandonado }

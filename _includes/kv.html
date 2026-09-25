@@ -1,0 +1,9 @@
+{%- comment -%} Valor de KPI: número fijo o "auto:total|same|crossed|nocause|open". {%- endcomment -%}
+{%- case include.v -%}
+{%- when 'auto:total' -%}{{ stats_total }}
+{%- when 'auto:same' -%}{{ stats_same }}
+{%- when 'auto:crossed' -%}{{ stats_crossed }}
+{%- when 'auto:nocause' -%}{{ stats_nocause }}
+{%- when 'auto:open' -%}{{ stats_open }}
+{%- else -%}{{ include.v }}
+{%- endcase -%}

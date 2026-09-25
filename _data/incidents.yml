@@ -1,0 +1,320 @@
+# Tarjetas de la bitácora de troubleshooting.
+# domain: net | lab | desk | lap    status: ok | mit | open | aban
+# layers: capa del síntoma → capa de la causa (vocabulario de 12 capas, ver _data/layers.yml)
+
+- domain: net
+  status: ok
+  layers: 09→09
+  standards: RFC 4787 · pf static-port
+  en:
+    title: The console that could only join half its games
+    symptom: The game console reported NAT Type 3 and matchmaking kept failing.
+    how: |-
+      The firewall rewrites the source port of every outbound flow by default. That is endpoint-dependent mapping, which the console classifies as strict NAT.
+    outcome: |-
+      An outbound NAT rule that preserves the source port for that one console only. I caught the mask set to the whole subnet before saving: that would have applied static ports to every device on the network and invited port collisions.
+  es:
+    title: La consola que solo entraba a la mitad de sus partidas
+    symptom: |-
+      La consola reportaba NAT tipo 3 y el matchmaking fallaba una y otra vez.
+    how: |-
+      El firewall reescribe por defecto el puerto de origen de cada flujo saliente. Eso es mapeo dependiente del destino, que la consola clasifica como NAT estricto.
+    outcome: |-
+      Una regla de NAT saliente que conserva el puerto de origen solo para esa consola. Antes de guardar vi que la máscara abarcaba la subred completa: habría aplicado puertos estáticos a todos los equipos y abierto la puerta a colisiones.
+- domain: net
+  status: ok
+  layers: 07→03
+  standards: 802.11 band steering
+  en:
+    title: Phones dropped WiFi after one second
+    symptom: |-
+      Most phones and a handheld console associated and then disconnected within a second, even on a static address. Smart plugs and the air conditioner stayed connected.
+    how: |-
+      Ruled out an exhausted DHCP pool (15 active leases) and the VPN tunnel (disabled, still failing). The access point's automatic band steering was failing with modern dual-band clients.
+    outcome: |-
+      Turned off band steering and split the network into one SSID per band. What changed its behavior in the first place is still unknown.
+  es:
+    title: Los teléfonos soltaban el WiFi al segundo
+    symptom: |-
+      Casi todos los teléfonos y una consola portátil se asociaban y se desconectaban en un segundo, incluso con dirección estática. Los enchufes inteligentes y el aire acondicionado seguían conectados.
+    how: |-
+      Descarté un pool DHCP agotado (15 concesiones activas) y el túnel VPN (desactivado, seguía fallando). El direccionamiento automático de banda del punto de acceso fallaba con clientes modernos de doble banda.
+    outcome: |-
+      Apagué el direccionamiento de banda y separé la red en un SSID por banda. Qué cambió su comportamiento en primer lugar sigue sin saberse.
+- domain: net
+  status: ok
+  layers: 08→06
+  standards: NFSv3 · RPC · default route
+  en:
+    title: File-sharing traffic leaving through the internet link
+    symptom: |-
+      The firewall log showed NFS and RPC ports leaving through the WAN - it looked like the storage was exposed.
+    how: |-
+      Blocking the ports and resetting states changed nothing. The state table showed the hypervisor as the source, not an outside host. Its backup storage entry still pointed at the NAS address from before I segmented the network; with no route to that old subnet, packets followed the default route out to the internet.
+    outcome: |-
+      Corrected the storage definition in the hypervisor's config file, because the web UI would not let me edit it.
+  es:
+    title: Tráfico de archivos compartidos saliendo por internet
+    symptom: |-
+      El registro del firewall mostraba puertos NFS y RPC saliendo por la WAN - parecía que el almacenamiento estaba expuesto.
+    how: |-
+      Bloquear los puertos y limpiar estados no cambió nada. La tabla de estados mostró al hipervisor como origen, no a un equipo externo. Su entrada de almacenamiento de respaldo seguía apuntando a la dirección del NAS de antes de segmentar la red; sin ruta hacia esa subred vieja, los paquetes siguieron la ruta por defecto hacia internet.
+    outcome: |-
+      Corregí la definición del almacenamiento en el archivo de configuración del hipervisor, porque la interfaz web no permitía editarla.
+- domain: net
+  status: ok
+  layers: 09→09
+  standards: first-match · RFC 1918
+  en:
+    title: A kill switch that never blocked anything
+    symptom: |-
+      With the VPN rule ordered one way the server leaked its real address; ordered the other way, it looked fine.
+    how: |-
+      The block rule matched the server going to private networks, not to the internet: its destination was missing the invert flag. Internet traffic never matched it and fell through to the general allow rule.
+    outcome: |-
+      Fixed the rule and tested it the only way a kill switch can be tested: took the tunnel down on purpose. The server returned nothing.
+  es:
+    title: Un kill switch que nunca bloqueó nada
+    symptom: |-
+      Con la regla de VPN en un orden, el servidor filtraba su dirección real; en el otro orden parecía estar bien.
+    how: |-
+      La regla de bloqueo coincidía con el servidor yendo a redes privadas, no a internet: al destino le faltaba la marca de invertir. El tráfico a internet nunca coincidía y caía en la regla general de salida.
+    outcome: |-
+      Corregí la regla y la probé de la única forma en que se prueba un kill switch: tumbé el túnel a propósito. El servidor no devolvió nada.
+- domain: net
+  status: ok
+  layers: 10→10
+  standards: TLS · wildcard certificates
+  en:
+    title: Certificate error on two nested subdomains
+    symptom: |-
+      Two published game-server dashboards showed "connection not secure" in every browser.
+    how: |-
+      Ruled out the tunnel's service type, the browser, and the origin being unreachable. A free edge certificate covers one subdomain level; these were two levels deep.
+    outcome: |-
+      Flattened them to one level and both loaded. The cause is inferred from that result - I did not inspect the certificate.
+  es:
+    title: Error de certificado en dos subdominios anidados
+    symptom: |-
+      Dos paneles publicados del servidor de juego mostraban "conexión no segura" en todos los navegadores.
+    how: |-
+      Descarté el tipo de servicio del túnel, el navegador y que el origen fuera inalcanzable. Un certificado gratuito de borde cubre un nivel de subdominio; estos tenían dos.
+    outcome: |-
+      Los aplané a un nivel y cargaron. La causa se infiere de ese resultado - no inspeccioné el certificado.
+- domain: net
+  status: mit
+  layers: 12→10
+  standards: DDNS · HTTP auth headers
+  en:
+    title: Dynamic DNS that silently never updated
+    symptom: |-
+      The dynamic-DNS entry never showed a current address or an update time.
+    how: |-
+      The service log gave it away: the plugin sends the credential in a legacy key header, while a scoped API token needs a Bearer header.
+    outcome: |-
+      Switched to the legacy account key. It works, but that key has far more reach than a scoped token - a trade-off I accepted knowingly and noted as debt.
+  es:
+    title: DNS dinámico que nunca se actualizaba, sin avisar
+    symptom: |-
+      La entrada de DNS dinámico nunca mostraba dirección actual ni hora de actualización.
+    how: |-
+      El log del servicio lo delató: el plugin envía la credencial en una cabecera de clave antigua, y un token de API con alcance limitado necesita una cabecera Bearer.
+    outcome: |-
+      Cambié a la clave global de la cuenta. Funciona, pero esa clave tiene mucho más alcance que un token limitado - un compromiso aceptado a conciencia y anotado como deuda.
+- domain: lab
+  status: mit
+  layers: 02→02
+  standards: ''
+  en:
+    title: The fans were not coming from the server
+    symptom: |-
+      The main server seemed to be spinning its fans up, and I went looking for the load.
+    how: |-
+      Ruled out a ZFS scrub (last runs on known dates), a process I had misread in a screenshot, and video decoding. The noise came from the managed switch sitting next to the desktop, whose fans ramp with heat.
+    outcome: |-
+      Relocating the switch. Lesson: confirm the source of a symptom before explaining it.
+  es:
+    title: Los ventiladores no venían del servidor
+    symptom: |-
+      El servidor principal parecía estar acelerando sus ventiladores y salí a buscar la carga.
+    how: |-
+      Descarté un scrub de ZFS (últimas corridas en fechas conocidas), un proceso que había leído mal en una captura y la decodificación de video. El ruido venía del switch gestionado junto al escritorio, cuyos ventiladores suben con el calor.
+    outcome: |-
+      Reubicar el switch. Lección: confirmar el origen de un síntoma antes de explicarlo.
+- domain: lab
+  status: ok
+  layers: 05→06
+  standards: systemd · POSIX permissions
+  en:
+    title: A service stuck restarting with a clean exit code
+    symptom: |-
+      The game server's systemd unit flipped between "activating" and "running", and every exit returned code 0.
+    how: |-
+      Exit code 0 looked like success, so I read the journal instead. Access was denied on the world file: an earlier manual run as root had created it, and the service runs as its own unprivileged user.
+    outcome: Fixed ownership of the data directory and restarted the unit.
+  es:
+    title: Un servicio reiniciándose en bucle con salida limpia
+    symptom: |-
+      La unidad systemd del servidor de juego alternaba entre "activating" y "running", y cada salida devolvía código 0.
+    how: |-
+      El código 0 parecía éxito, así que leí el journal. Acceso denegado sobre el archivo del mundo: un arranque manual anterior como root lo había creado, y el servicio corre con su propio usuario sin privilegios.
+    outcome: Corregí el dueño del directorio de datos y reinicié la unidad.
+- domain: lab
+  status: open
+  layers: 04→06
+  standards: GPT · LVM2 · dd
+  en:
+    title: Cloning a disk onto a smaller one, block by block
+    symptom: |-
+      Migrating the router node from a hard drive to a smaller SSD: the block copy ended with "no space left on device".
+    how: |-
+      The source disk was larger than the target. The backup GPT header and the end of the LVM physical volume landed past the end of the new disk. I repaired the partition table by hand, but the volume itself was never shrunk.
+    outcome: |-
+      The SSD was not put into service. Next attempt: shrink the volume first, or copy at the filesystem level instead of the block level.
+  es:
+    title: Clonar un disco sobre uno más pequeño, bloque a bloque
+    symptom: |-
+      Migrando el nodo de red de un disco mecánico a un SSD más pequeño: la copia por bloques terminó con "no space left on device".
+    how: |-
+      El disco de origen era mayor que el destino. La cabecera GPT de respaldo y el final del volumen físico LVM quedaron más allá del final del disco nuevo. Reparé la tabla de particiones a mano, pero el volumen nunca se redujo.
+    outcome: |-
+      El SSD no entró en servicio. Próximo intento: reducir el volumen primero, o copiar a nivel de sistema de archivos en vez de bloques.
+- domain: desk
+  status: ok
+  layers: 11→05
+  standards: DRM/KMS hotplug · evdev
+  en:
+    title: Random freezes and stuck keys
+    symptom: |-
+      Every few minutes the desktop froze for 1-3 seconds, a key stayed pressed and repeated, and the mouse stuck - even while idle watching video.
+    how: |-
+      Ruled out ten hypotheses, including keyboard repeat settings, USB hardware, cursor rendering, GPU sync variables, the WiFi daemon and a kernel-level hang. evtest showed a 24-second gap in key events; the kernel log stayed silent. The compositor's own log showed a loop of DRM hotplug events on the GPU, each one forcing a rescan of every connector.
+    outcome: |-
+      Disabled the three phantom connectors. The freezes stopped. Which connector triggered the storm was never identified.
+  es:
+    title: Congelamientos aleatorios y teclas pegadas
+    symptom: |-
+      Cada pocos minutos el escritorio se congelaba 1-3 segundos, una tecla se quedaba presionada y el mouse se trababa - incluso en reposo viendo video.
+    how: |-
+      Descarté diez hipótesis, entre ellas la repetición del teclado, el hardware USB, el renderizado del cursor, variables de sincronización de la GPU, el servicio de WiFi y un cuelgue del kernel. evtest mostró un hueco de 24 segundos en los eventos de teclado; el log del kernel no decía nada. El log del propio compositor mostró un bucle de eventos de hotplug DRM en la GPU, cada uno forzando un reescaneo de todos los conectores.
+    outcome: |-
+      Desactivé los tres conectores fantasma. Los congelamientos pararon. Nunca identifiqué qué conector disparaba la tormenta.
+- domain: desk
+  status: aban
+  layers: 04→05
+  standards: DKMS
+  en:
+    title: The expensive detour
+    symptom: |-
+      Before finding the real cause of the freezes, I blamed the GPU driver and tried downgrading to an older branch.
+    how: |-
+      The switch left two driver branches half-installed; DKMS could not build for the running kernel, and a failed snapshot rollback closed the way back. Black screen.
+    outcome: |-
+      Full reinstall. In my own words from that session: "we invested a lot chasing the older driver because of an assumption about the freeze that I never validated."
+  es:
+    title: El desvío caro
+    symptom: |-
+      Antes de encontrar la causa real de los congelamientos, culpé al driver de la GPU e intenté bajar a una rama anterior.
+    how: |-
+      El cambio dejó dos ramas del driver instaladas a medias; DKMS no pudo compilar para el kernel en ejecución, y un rollback de snapshot fallido cerró el camino de regreso. Pantalla negra.
+    outcome: |-
+      Reinstalación completa. En mis palabras de esa sesión: "invertimos mucho persiguiendo el driver viejo por una suposición mía sobre el freeze que nunca validé."
+- domain: desk
+  status: ok
+  layers: 11→05
+  standards: kernel modules · initramfs
+  en:
+    title: After a full update, the desktop would not start
+    symptom: After a full system update the graphical session did not load at all.
+    how: |-
+      From a text console, the driver reported an API mismatch. uname -r still showed the old kernel after rebooting: the new kernel image never reached /boot, so the old kernel module was running against the new userspace driver.
+    outcome: |-
+      Put the kernel image in place, regenerated the initramfs and the bootloader config, rebooted.
+  es:
+    title: Después de actualizar todo, el escritorio no arrancaba
+    symptom: |-
+      Tras una actualización completa del sistema, la sesión gráfica no cargaba.
+    how: |-
+      Desde una consola de texto, el driver reportó incompatibilidad de API. uname -r seguía mostrando el kernel viejo tras reiniciar: la imagen del kernel nuevo nunca llegó a /boot, así que el módulo viejo corría contra el driver de espacio de usuario nuevo.
+    outcome: |-
+      Coloqué la imagen del kernel, regeneré el initramfs y la configuración del gestor de arranque, reinicié.
+- domain: desk
+  status: ok
+  layers: 06→05
+  standards: NTFS · ntfs3 / ntfs-3g · Fast Startup
+  en:
+    title: A shared game drive that kept going read-only
+    symptom: |-
+      The dual-boot drive shared with Windows stopped mounting, then started throwing disk write errors on game downloads.
+    how: |-
+      The volume carried Windows' dirty flag, and it kept coming back. Windows Fast Startup does not fully shut down: it hibernates the kernel session, which leaves NTFS volumes marked as in use, so the Linux driver refuses or restricts them. The write errors outlived the remount: permissions, sandboxing and lockfiles all checked clean. Clearing half-written download files from an interrupted session let downloads resume.
+    outcome: |-
+      Fast Startup disabled, plus a shutdown script that forces a full shutdown instead of the hybrid one. The dirty flag stopped coming back.
+  es:
+    title: Un disco de juegos compartido que volvía a solo lectura
+    symptom: |-
+      El disco compartido con Windows en el arranque dual dejó de montar, y luego empezó a dar errores de escritura al descargar juegos.
+    how: |-
+      El volumen tenía la marca de sucio de Windows y volvía a aparecer. El Inicio rápido de Windows no apaga del todo: hiberna la sesión del kernel, y eso deja los volúmenes NTFS marcados como en uso, así que el driver de Linux los rechaza o los limita. Los errores de escritura siguieron tras remontar: permisos, sandbox y lockfiles salieron limpios. Borrar descargas a medias de una sesión interrumpida dejó avanzar las descargas.
+    outcome: |-
+      Inicio rápido desactivado, más un script de apagado que fuerza un apagado completo en vez del híbrido. La marca de sucio dejó de volver.
+- domain: lap
+  status: ok
+  layers: 03→03
+  standards: UEFI Secure Boot · PK/KEK/db
+  en:
+    title: Secure Boot keys that enrolled without errors and still did not stick
+    symptom: |-
+      After creating and enrolling my own Secure Boot keys with no errors, the firmware still reported Setup Mode.
+    how: |-
+      Checked whether the tool was showing stale data: a second tool agreed, and reading the raw EFI variable returned 01. The firmware accepted the KEK and db keys from the OS but refused to persist the Platform Key through that path.
+    outcome: |-
+      Built signed .auth files, copied them to the EFI partition, rebooted into the firmware and enrolled the Platform Key from its own menu. Setup Mode: disabled.
+  es:
+    title: Llaves de Secure Boot que se registraban sin error y no se quedaban
+    symptom: |-
+      Después de crear y registrar mis propias llaves de Secure Boot sin ningún error, el firmware seguía en Setup Mode.
+    how: |-
+      Verifiqué si la herramienta mostraba datos viejos: una segunda herramienta coincidió, y leer la variable EFI cruda devolvió 01. El firmware aceptaba las llaves KEK y db desde el sistema operativo, pero no guardaba la Platform Key por ese camino.
+    outcome: |-
+      Generé archivos .auth firmados, los copié a la partición EFI, reinicié al firmware y registré la Platform Key desde su propio menú. Setup Mode: desactivado.
+- domain: lap
+  status: mit
+  layers: 06→06
+  standards: UEFI ESP · FAT32
+  en:
+    title: A boot partition too small, and a failure that cascaded
+    symptom: |-
+      The bootloader hook kept failing to copy the initramfs, and then the regenerated boot menu came back with no kernels in it.
+    how: |-
+      The EFI partition was 256 MB and each initramfs about 245 MB; the tool copies kernels into that partition. When the copy failed, the tool aborted before writing any boot entries - so one space problem looked like two bugs.
+    outcome: |-
+      Wrote the bootloader config by hand, pointing at a separate 1 GB /boot partition instead of duplicating kernels into the EFI partition.
+  es:
+    title: Una partición de arranque pequeña y un fallo en cascada
+    symptom: |-
+      El hook del gestor de arranque fallaba al copiar el initramfs, y luego el menú regenerado apareció sin ningún kernel.
+    how: |-
+      La partición EFI tenía 256 MB y cada initramfs unos 245 MB; la herramienta copia los kernels a esa partición. Al fallar la copia, abortaba antes de escribir las entradas - así que un problema de espacio parecía dos bugs.
+    outcome: |-
+      Escribí la configuración del gestor de arranque a mano, apuntando a una partición /boot separada de 1 GB en vez de duplicar kernels en la partición EFI.
+- domain: lap
+  status: ok
+  layers: 12→05
+  standards: sudo · environment variables
+  en:
+    title: Login loop right after installing
+    symptom: |-
+      At the login screen the password was accepted, the screen flickered and came back to the login.
+    how: |-
+      The display manager's journal showed a successful login for root followed by an immediate logout. The installer script wrote the autologin user from $USER, and because it ran under sudo, $USER expanded to root.
+    outcome: |-
+      Corrected the user in the autologin config. The installer bug is worth reporting upstream.
+  es:
+    title: Bucle de inicio de sesión justo después de instalar
+    symptom: |-
+      En la pantalla de inicio se aceptaba la contraseña, la pantalla parpadeaba y volvía al login.
+    how: |-
+      El journal del gestor de sesiones mostró un inicio exitoso de root seguido de un cierre inmediato. El script de instalación escribía el usuario de autologin desde $USER, y como corría con sudo, $USER se expandía a root.
+    outcome: |-
+      Corregí el usuario en la configuración de autologin. El bug del instalador vale la pena reportarlo al proyecto.

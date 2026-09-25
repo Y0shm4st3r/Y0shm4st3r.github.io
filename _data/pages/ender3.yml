@@ -1,0 +1,256 @@
+# Contenido de la página. Cada texto va en inglés (en) y español (es).
+# Guía de edición: docs/GUIA (PDF) · sección "Editar texto".
+
+mast:
+  eyebrow:
+    en: 3D Printing · Firmware · Puerto Rico
+    es: Impresión 3D · Firmware · Puerto Rico
+  h1:
+    en: Ender 3<br>Rebuild
+    es: Ender 3<br>Reconstrucción
+  thesis:
+    en: |-
+      A consumer printer changed across three layers, with every change justified by a measurement.
+    es: |-
+      Una impresora de consumo modificada en tres capas, con cada cambio justificado por una medición.
+  # repo = nombre de la clave en _config.yml → links (la URL vive solo allí)
+  repo: firmware_repo
+  repo_label:
+    en: Firmware source, build steps and mesh analysis on GitHub →
+    es: Código del firmware, pasos de compilación y análisis del mesh en GitHub →
+  kpis:
+  - v: ~2 kg
+    l:
+      en: PLA+ and PETG printed on custom firmware
+      es: PLA+ y PETG impresos con firmware propio
+  - v: '12'
+    l:
+      en: Config lines changed vs upstream
+      es: Líneas de configuración vs el upstream
+  - v: 0.180 mm
+    l:
+      en: Bed mesh range, down from 1.938
+      es: Rango del mesh, antes 1.938
+  - v: 0.015 mm
+    l:
+      en: Mesh-to-mesh repeatability
+      es: Repetibilidad entre meshes
+sections:
+- id: the-machine
+  snum:
+    en: 01 - The machine
+    es: 01 - La máquina
+  h2:
+    en: Three layers, and each one constrained the next
+    es: Tres capas, y cada una le puso un límite a la siguiente
+  blocks:
+  - p:
+      en: |-
+        The printer started as a stock Ender 3: bowden extruder, single Z leadscrew, closed firmware, no bed compensation. It now prints PLA+ and PETG reliably, and getting there took changes at three different layers - extrusion, motion, and control. None of them were chosen because they were popular upgrades. Each one answered a specific failure I could describe.
+      es: |-
+        La impresora salió de fábrica con extrusor bowden, un solo husillo en el eje Z, firmware cerrado y sin compensación de cama. Hoy imprime PLA+ y PETG de forma confiable, y llegar ahí requirió cambios en tres capas distintas: extrusión, movimiento y control. Ninguno se eligió por ser una mejora popular. Cada uno respondía a un fallo que yo podía describir.
+  - p:
+      en: |-
+        The firmware layer had a harder constraint than a preference. The firmware project I wanted ships prebuilt binaries, but every one of them targets the colour touchscreen sold with the newer models - none drive this machine's stock monochrome LCD. **Compiling from source was not the interesting option, it was the only one**, and it shows in the diff: four of the twelve lines I changed exist purely to select the right display.
+      es: |-
+        La capa de firmware tenía una restricción más dura que una preferencia. El proyecto de firmware que quería publica binarios compilados, pero todos apuntan a la pantalla táctil a color de los modelos nuevos: ninguno funciona con el LCD monocromo de fábrica de esta máquina. **Compilar desde fuente no era la opción interesante, era la única**, y se ve en el diff: cuatro de las doce líneas que cambié existen solo para seleccionar la pantalla correcta.
+  - p:
+      en: |-
+        What I care about in this project is the part that isn't visible in a parts list: **every change at one layer created a new constraint at another**. Direct drive fixed retraction and invalidated the retraction tuning. Dual Z fixed gantry sag and permanently removed a firmware feature. The new control board is what made the rest measurable at all.
+      es: |-
+        Lo que me interesa de este proyecto es lo que no se ve en una lista de piezas: **cada cambio en una capa creó una restricción nueva en otra**. El direct drive arregló la retracción y dejó inválida la calibración de retracción. El doble husillo arregló la caída del pórtico y eliminó de forma permanente una función del firmware. Y la placa nueva es lo único que hizo medible todo lo demás.
+  - fig:
+      svg: ender3-1
+      head:
+        en: Upgrade chain - symptom, change, and the constraint it created
+        es: Cadena de mejoras - síntoma, cambio, y la restricción que creó
+  - figcap:
+      en: |-
+        **The trade-off I defend most:** the dual-Z upgrade is driven from a single stepper driver through a splitter cable. That is the cheap way to do it, and it permanently gives up Marlin's automatic gantry alignment, because one driver cannot move two motors to different positions. I took that trade knowingly - gantry alignment is a rare manual job, and the money went to the control board instead, which is the change that made every measurement on this page possible. The board swap has one trap worth naming: this board's microcontroller differs from a near-identical variant by a single letter in the build environment, and choosing the wrong one compiles without a single warning and produces a binary that bricks the board. That is why the verification chain exists.
+      es: |-
+        **El trade-off que más defiendo:** el doble husillo se mueve desde un solo driver a través de un cable splitter. Es la forma barata de hacerlo, y renuncia de forma permanente a la alineación automática del pórtico de Marlin, porque un driver no puede llevar dos motores a posiciones distintas. Tomé ese intercambio a sabiendas: alinear el pórtico es un trabajo manual que hago rara vez, y el dinero se fue a la placa de control, que es el cambio que hizo posible cada medición de esta página. El cambio de placa tiene una trampa que vale la pena nombrar: el microcontrolador de esta placa se diferencia de una variante casi idéntica por una sola letra en el entorno de compilación, y elegir el equivocado compila sin un solo warning y produce un binario que inutiliza la placa. Por eso existe la cadena de verificación.
+- id: four-real-problems
+  snum:
+    en: 02 - Four real problems
+    es: 02 - Cuatro problemas reales
+  h2:
+    en: What I learned solving them
+    es: Lo que aprendí resolviéndolos
+  blocks:
+  - case:
+      en:
+        tag: Case 01 · Data analysis
+        h3: A 2 mm error where only 0.16 mm mattered
+        items:
+        - b: Problem
+          t: |-
+            The bed probe reported a 1.938 mm spread across the build surface. Read at face value that is a ruined build plate, and replacing it was the obvious next purchase.
+        - b: What I measured
+          t: |-
+            Instead of reading the spread, I fitted a least-squares plane to the 25 probe points and subtracted it. The plane's two slopes are tilt - a mounting error, correctable with screws. Whatever survives the subtraction is non-planar, and no amount of levelling removes it.
+        - chart: ender-components
+        - b: What I found
+          t: |-
+            1.752 mm of that spread is a single tilt along X, 9.79 mm per metre. The part that is genuinely not flat is **0.163 mm peak-to-peak, σ 0.043 mm**, measured across 180 mm. The surface is fine. The way it is mounted is not.
+        - b: What I ruled out
+          t: |-
+            Buying a replacement build plate. It was the intuitive fix, it would have cost real money as a student, and it would have addressed roughly 8 % of the error. I also ruled out chasing the tilt with the levelling knobs alone, because the knobs and the gantry act on the same axis and I had no way yet to tell which one was contributing.
+        - b: What happened when I acted on it
+          t: |-
+            The decomposition made a testable prediction: levelling should remove the tilt and leave the residual alone. I equalised the two Z leadscrews by hand, re-trammed the corners, and probed twice. The range fell from 1.938 to **0.180 mm** and the X tilt from 9.79 to 0.44 mm/m - a 22× reduction. The residual went from 0.163 to 0.131 mm, and its map kept the same shape (**r = 0.965** against the one before). The tilt was mounting. The residual was the plate. The prediction held.
+        lesson: |-
+          A table with one short leg still has a flat top - you shim it. A warped top is not fixed by shimming. The spread alone cannot tell you which one you have; separating the plane from the residual can, and it costs nothing but arithmetic.
+      es:
+        tag: Caso 01 · Análisis de datos
+        h3: Un error de 2 mm donde solo importaban 0.16 mm
+        items:
+        - b: Problema
+          t: |-
+            La sonda reportó una diferencia de 1.938 mm a lo largo de la superficie de impresión. Leído tal cual, eso es una placa destruida, y reemplazarla era la compra obvia.
+        - b: Qué medí
+          t: |-
+            En vez de leer el rango, ajusté un plano por mínimos cuadrados sobre los 25 puntos sondeados y lo resté. Las dos pendientes del plano son inclinación: un error de montaje, corregible con tornillos. Lo que sobrevive a la resta no es plano, y no hay nivelación que lo quite.
+        - chart: ender-components
+        - b: Qué encontré
+          t: |-
+            1.752 mm de esa diferencia son una sola inclinación en X, de 9.79 mm por metro. La parte que de verdad no es plana son **0.163 mm pico a pico, σ 0.043 mm**, medidos sobre 180 mm. La superficie está bien. El montaje no.
+        - b: Qué descarté
+          t: |-
+            Comprar una placa de vidrio nueva. Era el arreglo intuitivo, cuesta dinero real siendo estudiante, y habría atacado cerca del 8 % del error. También descarté perseguir la inclinación solo con las perillas, porque las perillas y el pórtico actúan sobre el mismo eje y todavía no tenía forma de saber cuál de los dos estaba aportando.
+        - b: Qué pasó cuando actué
+          t: |-
+            La descomposición hacía una predicción comprobable: nivelar debía quitar la inclinación y dejar el residuo igual. Igualé a mano los dos husillos del Z, reajusté las esquinas y sondeé dos veces. El rango bajó de 1.938 a **0.180 mm** y la inclinación en X de 9.79 a 0.44 mm/m, 22 veces menos. El residuo pasó de 0.163 a 0.131 mm y su mapa mantuvo la misma forma (**r = 0.965** contra el anterior). La inclinación era el montaje. El residuo era la placa. La predicción se cumplió.
+        lesson: |-
+          Una mesa con una pata corta sigue teniendo el tablero plano: se calza. Un tablero pandeado no se arregla calzando. El rango por sí solo no te dice cuál de las dos tienes; separar el plano del residuo sí, y no cuesta más que aritmética.
+  - case:
+      en:
+        tag: Case 02 · Verification
+        h3: The command returned "ok" and had never run
+        items:
+        - b: Problem
+          t: |-
+            I sent a sequence of levelling commands to the printer over serial. Every one came back acknowledged. The stored mesh should have been re-probed, and the machine behaved as if it had been.
+        - b: What I measured
+          t: |-
+            Rather than trust the acknowledgement, I dumped the controller's full persisted state before and after, and compared the 25 stored mesh values.
+        - b: What I found
+          t: |-
+            Identical to the last digit. Nothing had been probed. The serial console had concatenated two pasted lines into a single transmission, and the firmware's parser takes the first valid code it finds on a line: it executed the first command, replied *ok*, and discarded the rest without a word. The acknowledgement was truthful - it confirmed the line was received, which is not what I had read it as.
+        - b: What I ruled out
+          t: |-
+            A failing probe, a firmware bug, a wiring fault. All three were plausible, all three were wrong, and all three would have cost hours or money. The failure was in the transport layer, one level below where I was looking.
+        lesson: |-
+          A success response tells you a message was accepted, not that the work happened. When a command is supposed to change state, the thing to check is the state.
+      es:
+        tag: Caso 02 · Verificación
+        h3: El comando devolvió «ok» y nunca se ejecutó
+        items:
+        - b: Problema
+          t: |-
+            Mandé una secuencia de comandos de nivelación a la impresora por serial. Todos volvieron confirmados. La malla guardada debía haberse vuelto a sondear, y la máquina se comportaba como si así hubiera sido.
+        - b: Qué medí
+          t: |-
+            En vez de fiarme de la confirmación, volqué el estado persistido completo del controlador antes y después, y comparé los 25 valores guardados de la malla.
+        - b: Qué encontré
+          t: |-
+            Idénticos hasta el último dígito. No se había sondeado nada. La consola serial había concatenado dos líneas pegadas en una sola transmisión, y el parser del firmware toma el primer código válido que encuentra en la línea: ejecutó el primer comando, respondió *ok*, y descartó el resto sin decir nada. La confirmación era cierta - confirmaba que la línea se recibió, que no es como yo la estaba leyendo.
+        - b: Qué descarté
+          t: |-
+            Una sonda defectuosa, un bug del firmware, un problema de cableado. Las tres eran plausibles, las tres estaban equivocadas, y las tres habrían costado horas o dinero. El fallo estaba en la capa de transporte, un nivel por debajo de donde yo estaba mirando.
+        lesson: |-
+          Una respuesta de éxito dice que el mensaje se aceptó, no que el trabajo ocurrió. Cuando un comando debe cambiar un estado, lo que hay que revisar es el estado.
+  - case:
+      en:
+        tag: Case 03 · Metrology
+        h3: The precision figure was measuring the wrong thing
+        items:
+        - b: Problem
+          t: |-
+            The standard probe repeatability test reported σ = 0.0034 mm. At that precision, any difference between two bed maps larger than a few microns would be a real change in the machine, and I was treating it that way.
+        - b: What I measured
+          t: |-
+            I read what the test actually does: it probes the same point repeatedly without moving the carriage. It characterises the sensor, not the machine. So I compared two complete 25-point maps taken on different days and diffed them point by point.
+        - fig: ender3-2
+          head: Non-planar residual - the same map, measured twice
+        - figcap: |-
+            Both maps have the fitted plane removed, so what is left is only the part that is not flat. The signature is the same shape both times - high at both edges, low left of centre - which is what makes it a property of the machine rather than noise.
+        - b: What I found
+          t: |-
+            Two maps from different sessions differed by up to **0.063 mm - eighteen times the reported σ**, and not as noise: the differences formed a clean front-to-back gradient that matched a 0.29 mm/m change in the fitted Y tilt. Something moved between sessions. Later, two maps taken back to back differed by at most **0.015 mm** - already four times σ. So there are three numbers, not one: 0.0034 for the sensor, 0.015 for the machine within a session, 0.063 across sessions. The last two are the thresholds that decide whether a change is real.
+        - b: What I ruled out
+          t: |-
+            My own explanation. I had assumed the stored map was stale and predated a levelling adjustment, which would have explained the disagreement neatly. Re-measuring took ten minutes and killed it: the two maps correlate at **r = 0.97** in their non-planar signature and their X tilt differs by 0.9 %. The map was never stale. I was wrong, and the only reason I found out is that there was a number to check the story against.
+        lesson: |-
+          A precision figure is only worth what the measurement was allowed to vary. A standard deviation taken without moving anything describes the sensor. The number that tells you whether a change is real has to include everything that moves.
+      es:
+        tag: Caso 03 · Metrología
+        h3: La cifra de precisión medía lo que no era
+        items:
+        - b: Problema
+          t: |-
+            La prueba estándar de repetibilidad de la sonda reportó σ = 0.0034 mm. Con esa precisión, cualquier diferencia entre dos mapas de cama mayor a unas micras sería un cambio real en la máquina, y yo la estaba tratando así.
+        - b: Qué medí
+          t: |-
+            Leí qué hace realmente la prueba: sondea el mismo punto una y otra vez sin mover el carro. Caracteriza el sensor, no la máquina. Así que comparé dos mapas completos de 25 puntos tomados en días distintos, punto por punto.
+        - fig: ender3-2
+          head: Residuo no plano - el mismo mapa, medido dos veces
+        - figcap: |-
+            A los dos mapas se les quitó el plano ajustado, así que lo que queda es solo la parte que no es plana. La firma tiene la misma forma las dos veces - alta en ambos bordes, baja a la izquierda del centro - y eso es lo que la convierte en una propiedad de la máquina y no en ruido.
+        - b: Qué encontré
+          t: |-
+            Dos mapas de sesiones distintas diferían hasta **0.063 mm - dieciocho veces la σ reportada**, y no como ruido: las diferencias formaban un gradiente limpio de frente a fondo que coincidía con un cambio de 0.29 mm/m en la inclinación en Y. Algo se movió entre sesiones. Después, dos mapas tomados uno tras otro difirieron como máximo **0.015 mm**, ya cuatro veces la σ. Así que no hay un número, hay tres: 0.0034 para el sensor, 0.015 para la máquina dentro de una sesión, 0.063 entre sesiones. Los dos últimos son los umbrales que deciden si un cambio es real.
+        - b: Qué descarté
+          t: |-
+            Mi propia explicación. Había asumido que el mapa guardado estaba obsoleto y era anterior a un ajuste de nivelación, lo cual explicaba el desacuerdo de forma limpia. Volver a medir tomó diez minutos y la mató: los dos mapas correlacionan a **r = 0.97** en su firma no plana y su inclinación en X difiere en 0.9 %. El mapa nunca estuvo obsoleto. Me equivoqué, y la única razón por la que me enteré es que había un número contra el cual contrastar la historia.
+        lesson: |-
+          Una cifra de precisión vale lo que se le permitió variar a la medición. Una desviación estándar tomada sin mover nada describe el sensor. El número que te dice si un cambio es real tiene que incluir todo lo que se mueve.
+  - case:
+      en:
+        tag: Case 04 · Operational risk
+        h3: Two harmless settings that together overwrote the tuning
+        items:
+        - b: Problem
+          t: |-
+            The motion limits compiled into the firmware did not match what the machine was enforcing. Nothing anywhere reported a conflict, and the machine had been printing.
+        - b: What I measured
+          t: |-
+            I dumped the live persisted settings and compared them field by field against the values compiled into the firmware, then read the header of the files the slicer was producing.
+        - b: What I found
+          t: |-
+            The slicer writes acceleration, jerk and feedrate limits into the header of every file it exports. On their own they are harmless - they apply to one job and vanish at the next power cycle. But the start sequence also contained a save-to-persistent-storage command. Together, every single print permanently overwrote the firmware's tuned limits and consumed one write cycle of the controller's emulated flash. Neither half is a fault. The pair is.
+        - b: What I ruled out
+          t: |-
+            Fixing it only in the slicer. Slicers get reinstalled, updated and replaced, and the setting would quietly come back with no signal that it had. The durable fix is that the expected persisted state is written down with its values, and verified with one command.
+        lesson: |-
+          I look for combinations now. Two settings that are each defensible in isolation can produce a failure neither of them would cause alone - and that failure has no owner, so nobody goes looking for it.
+      es:
+        tag: Caso 04 · Riesgo operativo
+        h3: Dos ajustes inofensivos que juntos borraban la calibración
+        items:
+        - b: Problema
+          t: |-
+            Los límites de movimiento compilados en el firmware no coincidían con los que la máquina estaba aplicando. Nada reportaba un conflicto en ninguna parte, y la impresora llevaba tiempo imprimiendo.
+        - b: Qué medí
+          t: |-
+            Volqué los ajustes persistidos en vivo y los comparé campo por campo contra los valores compilados en el firmware, y después leí el encabezado de los archivos que estaba generando el laminador.
+        - b: Qué encontré
+          t: |-
+            El laminador escribe límites de aceleración, jerk y velocidad en el encabezado de cada archivo que exporta. Por sí solos son inofensivos: aplican a un trabajo y desaparecen al siguiente apagado. Pero la secuencia de inicio también incluía un comando de guardar a memoria persistente. Juntos, cada impresión sobrescribía permanentemente los límites calibrados del firmware y consumía un ciclo de escritura de la flash emulada del controlador. Ninguna mitad es un fallo. El par sí.
+        - b: Qué descarté
+          t: |-
+            Arreglarlo solo en el laminador. Los laminadores se reinstalan, se actualizan y se reemplazan, y el ajuste volvería en silencio sin ninguna señal de que volvió. El arreglo duradero es que el estado persistido esperado esté escrito con sus valores, y se verifique con un comando.
+        lesson: |-
+          Ahora busco combinaciones. Dos ajustes defendibles por separado pueden producir un fallo que ninguno causaría solo - y ese fallo no tiene dueño, así que nadie lo va a buscar.
+- id: still-open
+  snum:
+    en: 03 - Still open
+    es: 03 - Sigue abierto
+  h2:
+    en: I know what is still open
+    es: Sé qué queda abierto
+  blocks:
+  - p:
+      en: |-
+        The retraction distance has not been re-verified since the extruder conversion, the bed mesh was taken cold while printing happens hot, and the one bump left in the bed - the right edge, about 0.09 mm high - is unexplained, with a test to separate plate from machine that I have not run yet. All three are ranked by what they cost if they fail, not by how easy they are to close.
+      es: |-
+        La distancia de retracción no se ha vuelto a verificar desde la conversión del extrusor, el mesh se tomó en frío y se imprime en caliente, y el único relieve que queda en la cama - el borde derecho, unos 0.09 mm alto - no tiene explicación todavía; hay una prueba que separa placa de máquina y aún no la corro. Los tres están ordenados por lo que cuestan si fallan, no por lo fáciles que sean de cerrar.

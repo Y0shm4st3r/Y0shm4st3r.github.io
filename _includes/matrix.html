@@ -1,0 +1,10 @@
+{%- comment -%} Matriz capa del síntoma × capa de la causa. Se calcula sola desde _data/layer_log.yml. {%- endcomment -%}
+{%- assign lang = include.lang -%}{%- assign u = site.data.ui.matrix -%}
+<div class="chart mx" data-mx data-lang="{{ lang }}">
+  <div class="chart-ttl">{{ include.m.title[lang] }}</div>
+  <p class="chart-sub">{% include inline.html v=include.m.sub lang=lang %}</p>
+  <div class="mx-scroll"><div class="mx-grid" role="grid" aria-label="{{ include.m.title[lang] }}"></div></div>
+  <div class="mx-key" aria-hidden="true"></div>
+  <button class="tbtn" type="button" aria-expanded="false" data-show="{{ u.show[lang] }}" data-hide="{{ u.hide[lang] }}">{{ u.show[lang] }}</button>
+  <div class="tbl-wrap" hidden><table><thead><tr><th>{{ u.symptom[lang] }}</th><th>{{ u.cause[lang] }}</th><th class="r">#</th></tr></thead><tbody></tbody></table></div>
+</div>

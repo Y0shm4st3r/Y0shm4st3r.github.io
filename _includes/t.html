@@ -1,0 +1,2 @@
+{%- comment -%} Texto bilingüe: acepta {en, es} o un texto simple. Uso: include t.html v=objeto lang=lang {%- endcomment -%}
+{%- if include.v.en -%}{{ include.v[include.lang] }}{%- else -%}{{ include.v }}{%- endif -%}

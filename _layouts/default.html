@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+<head>
+{% include head.html %}
+</head>
+<body>
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+{% include topbar.html %}
+{{ content }}
+<script type="application/json" id="layers-data">{"names": {{ site.data.layers | jsonify }}, "log": {{ site.data.layer_log | jsonify }}, "ui": {{ site.data.ui.matrix | jsonify }} }</script>
+<script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
+</body>
+</html>

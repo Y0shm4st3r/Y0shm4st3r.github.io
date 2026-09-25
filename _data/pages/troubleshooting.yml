@@ -1,0 +1,225 @@
+# Contenido de la página. Cada texto va en inglés (en) y español (es).
+# {total}, {same}, {crossed} se reemplazan solos con los números de _data/layer_log.yml.
+
+mast:
+  eyebrow:
+    en: Troubleshooting · Postmortems
+    es: Troubleshooting · Postmortems
+  h1:
+    en: Where it<br>broke
+    es: Dónde se<br>rompió
+  thesis:
+    en: |-
+      Real failures across my network, homelab and Linux machines - what I saw, what I ruled out, and what it actually was.
+    es: |-
+      Fallas reales en mi red, mi homelab y mis máquinas Linux: qué vi, qué descarté y qué era en realidad.
+  kpis:
+  - v: |-
+      auto:total
+    l:
+      en: Incidents logged
+      es: Incidentes registrados
+  - v: |-
+      auto:crossed
+    l:
+      en: Crossed to another layer
+      es: Cruzaron a otra capa
+  - v: |-
+      auto:nocause
+    l:
+      en: Root cause never confirmed
+      es: Causa raíz sin confirmar
+  - v: |-
+      auto:open
+    l:
+      en: Still open or abandoned
+      es: Abiertos o abandonados
+  by2:
+    en: |-
+      Written blameless: including my own mistakes and what I never solved
+    es: |-
+      Escrito sin culpables: incluidos mis propios errores y lo que nunca resolví
+sections:
+- id: pattern
+  snum:
+    en: 01 - The pattern
+    es: 01 - El patrón
+  h2:
+    en: Most problems are fixed where they appear
+    es: Casi todo se arregla donde aparece
+  blocks:
+  - p:
+      en: |-
+        I kept a log of every problem across eight troubleshooting sessions and tagged each one twice: the layer where I noticed it and the layer where the cause actually was. {same} of {total} were fixed in the same layer they appeared in. The {crossed} off the diagonal are the ones that take real diagnosis, because the first place you look is the wrong one.
+      es: |-
+        Llevé registro de cada problema en ocho sesiones de troubleshooting y etiqueté cada uno dos veces: la capa donde lo noté y la capa donde estaba la causa de verdad. {same} de {total} se arreglaron en la misma capa donde aparecieron. Los {crossed} fuera de la diagonal son los que exigen diagnóstico de verdad, porque el primer lugar donde miras es el equivocado.
+  - matrix:
+      title:
+        en: Where I saw it versus where it was
+        es: Dónde lo vi contra dónde estaba
+      sub:
+        en: |-
+          Rows: the layer where the symptom showed up. Columns: the layer of the root cause. Cells on the diagonal are problems fixed where they appeared.
+        es: |-
+          Filas: la capa donde apareció el síntoma. Columnas: la capa de la causa raíz. Las celdas de la diagonal son problemas resueltos donde aparecieron.
+  - figcap:
+      en: |-
+        **Read it as a pattern, not a statistic.** These are {total} entries from my own logs, tagged with a fixed 12-layer vocabulary, before merging duplicates across sessions. The application layer dominates because that is where most of my time goes, not because it fails most.
+      es: |-
+        **Léelo como un patrón, no como una estadística.** Son {total} entradas de mis propios registros, etiquetadas con un vocabulario fijo de 12 capas, antes de fusionar duplicados entre sesiones. La capa de aplicación domina porque ahí paso la mayor parte del tiempo, no porque sea la que más falla.
+  - h3:
+      en: One trigger showed up in four different layers
+      es: Un mismo disparador apareció en cuatro capas distintas
+  - p:
+      en: |-
+        Power coming back after an outage left something broken four separate times: the switch stopped handing out DHCP leases, the firewall's WAN did not pick up an address, the shared dual-boot drive came back flagged dirty, and the monitoring looked down. None of the four has a confirmed cause, so I file them as a pattern. It is also why the next item on my bench is an auto-power-on circuit and a recovery sequence, not another service.
+      es: |-
+        La vuelta de la luz después de un apagón dejó algo roto en cuatro ocasiones distintas: el switch dejó de repartir direcciones por DHCP, la WAN del firewall no tomó dirección, el disco compartido del arranque dual volvió marcado como sucio y el monitoreo aparentaba estar caído. Ninguno de los cuatro tiene causa confirmada, así que los archivo como patrón. Por eso lo próximo en mi banco es un circuito de auto-encendido y una secuencia de recuperación, no otro servicio.
+- id: deep
+  snum:
+    en: 02 - Two cases in depth
+    es: 02 - Dos casos a fondo
+  h2:
+    en: The first place I looked was wrong
+    es: El primer lugar donde miré era el equivocado
+  blocks:
+  - case:
+      en:
+        tag: Case A · Network · routing
+        h3: The console "had no internet", and the firewall was innocent
+        items:
+        - b: Symptom
+          t: |-
+            After I gave the console a fixed address, its connection test failed at the internet step, so the NAT test reported "Failed". It still received a gateway and DNS servers.
+        - b: What I ruled out
+          t: |-
+            A missing NAT rule - that produces a strict NAT type, not a failure. A dead WAN with traffic failing over to the VPN - the gateway page showed the WAN up. A policy-routing rule sending the console into the tunnel - none on that interface, and no floating rules at all.
+        - b: What the log showed
+          t: |-
+            Live firewall logs filtered on the console: only its DNS queries were leaving through the VPN interface. Everything else took the normal path. So the problem was in routing, not in the firewall rules.
+        - b: Cause
+          t: |-
+            While setting the reservation I had typed public DNS servers into its fields by mistake. One of them is also the address the firewall pings to check the VPN tunnel is alive. The firewall installs a /32 host route to that address through the tunnel, and longest-prefix match beats the default route. The queries went into the tunnel, where outbound NAT does not cover the home network, and died there. No DNS, so no "internet".
+        - b: Fix
+          t: |-
+            Emptied the DNS fields so the console inherits the firewall's own resolver. Open item: move the tunnel's health-check target to an address no client would ever use.
+        lesson: |-
+          The symptom named DNS and the fix was in DNS, but the cause lived in the routing table. A health-check address is not just a setting: it becomes a route that every client on the network is subject to.
+      es:
+        tag: Caso A · Red · enrutamiento
+        h3: La consola "no tenía internet" y el firewall era inocente
+        items:
+        - b: Síntoma
+          t: |-
+            Después de fijarle una dirección a la consola, su prueba de conexión fallaba en el paso de internet, así que la prueba de NAT reportaba "Fallida". Aun así recibía gateway y servidores DNS.
+        - b: Qué descarté
+          t: |-
+            Que faltara una regla de NAT - eso produce un tipo de NAT estricto, no un fallo. Una WAN caída con el tráfico conmutando a la VPN - la página de gateways mostraba la WAN arriba. Una regla de enrutamiento por política metiendo la consola al túnel - ninguna en esa interfaz, y cero reglas flotantes.
+        - b: Qué mostró el log
+          t: |-
+            El registro en vivo del firewall filtrado por la consola: solo sus consultas DNS salían por la interfaz de la VPN. Todo lo demás tomaba el camino normal. El problema estaba en el enrutamiento, no en las reglas.
+        - b: Causa
+          t: |-
+            Al crear la reserva escribí por error servidores DNS públicos en sus campos. Uno de ellos es también la dirección a la que el firewall hace ping para saber si el túnel VPN sigue vivo. El firewall instala una ruta de host /32 hacia esa dirección por el túnel, y la coincidencia de prefijo más largo le gana a la ruta por defecto. Las consultas entraban al túnel, donde el NAT saliente no cubre la red de la casa, y morían ahí. Sin DNS, no hay "internet".
+        - b: Arreglo
+          t: |-
+            Vacié los campos DNS para que la consola herede el resolvedor del propio firewall. Pendiente: mover el objetivo de verificación del túnel a una dirección que ningún cliente vaya a usar.
+        lesson: |-
+          El síntoma decía DNS y el arreglo estuvo en DNS, pero la causa vivía en la tabla de rutas. Una dirección de verificación no es solo un ajuste: se convierte en una ruta que afecta a todos los clientes de la red.
+  - case:
+      en:
+        tag: Case B · Storage · boot order
+        h3: The photo server "deleted" everything, and nothing was lost
+        items:
+        - b: Symptom
+          t: |-
+            The private photo server opened as a fresh install, with even the user account gone.
+        - b: What I ruled out
+          t: |-
+            That a container restart had wiped the database - the photo library was intact on the NAS, and the damage predated the restart by days. That the encrypted dataset had stayed locked after a reboot - its key was loaded and it was mounted. That NFS was failing to cross into a nested dataset - there were no child datasets.
+        - b: What I found
+          t: |-
+            The mount point on the application server was an empty local directory created that day, not the NAS share. The systemd automount unit had been in a failed state for two days: Docker fired about six mount requests in five seconds before NFS finished mounting, systemd hit its start limit and stopped trying.
+        - b: Cause
+          t: |-
+            With the share missing, the database container started anyway and initialized a brand-new empty cluster on the local directory. The app faithfully showed that empty database. The real database and every photo sat untouched on the NAS the whole time.
+        - b: Fix
+          t: |-
+            Stopped the stack first so nothing else would be written, reset the failed units, mounted the share, and started the stack on the real database. Pending: make Docker require the mount before starting, and move the database off NFS onto local disk.
+        lesson: |-
+          A failed mount can look exactly like total data loss. The first move is to stop writing, the second is to check what is actually mounted - before restoring anything from backup.
+      es:
+        tag: Caso B · Almacenamiento · orden de arranque
+        h3: El servidor de fotos "borró" todo, y no se perdió nada
+        items:
+        - b: Síntoma
+          t: |-
+            El servidor privado de fotos abrió como instalación nueva, sin siquiera la cuenta de usuario.
+        - b: Qué descarté
+          t: |-
+            Que un reinicio del contenedor hubiera borrado la base de datos - la biblioteca estaba intacta en el NAS y el daño era días anterior al reinicio. Que el dataset cifrado se hubiera quedado bloqueado tras un reinicio - su llave estaba cargada y estaba montado. Que NFS no cruzara a un dataset anidado - no había datasets hijos.
+        - b: Qué encontré
+          t: |-
+            El punto de montaje en el servidor de aplicaciones era un directorio local vacío creado ese día, no el recurso del NAS. La unidad de automontaje de systemd llevaba dos días en estado fallido: Docker lanzó unas seis peticiones de montaje en cinco segundos antes de que NFS terminara, systemd llegó a su límite de arranques y dejó de intentar.
+        - b: Causa
+          t: |-
+            Sin el recurso montado, el contenedor de la base de datos arrancó igual e inicializó un clúster nuevo y vacío en el directorio local. La aplicación mostró fielmente esa base vacía. La base real y cada foto estuvieron intactas en el NAS todo el tiempo.
+        - b: Arreglo
+          t: |-
+            Paré el stack primero para que no se escribiera nada más, reinicié las unidades fallidas, monté el recurso y arranqué el stack sobre la base real. Pendiente: que Docker exija el montaje antes de arrancar, y sacar la base de datos de NFS a disco local.
+        lesson: |-
+          Un montaje fallido puede verse exactamente igual que una pérdida total de datos. Lo primero es dejar de escribir; lo segundo, comprobar qué está montado de verdad - antes de restaurar nada de un respaldo.
+- id: field-log
+  snum:
+    en: 03 - Field log
+    es: 03 - Bitácora
+  h2:
+    en: More incidents, told briefly
+    es: Más incidentes, contados en corto
+  blocks:
+  - p:
+      en: |-
+        A cross-section of the log. Filter by where it happened; each card says how I found the cause and whether it is actually closed.
+      es: |-
+        Un corte transversal del registro. Filtra por dónde ocurrió; cada tarjeta dice cómo encontré la causa y si de verdad está cerrado.
+  - log: true
+- id: open
+  snum:
+    en: 04 - Still open
+    es: 04 - Sigue abierto
+  h2:
+    en: A laptop that shuts off when you plug it in
+    es: Una laptop que se apaga al enchufarla
+  blocks:
+  - case:
+      style: open
+      en:
+        tag: Electronics · power delivery
+        items:
+        - b: Symptom
+          t: |-
+            Plugging in the 240 W charger shuts the laptop off instantly - while running, while booting, even sitting in the firmware setup screen. Over two weeks it progressed: it stopped booting on battery alone, then started shutting off on USB-C power too.
+        - b: What I ruled out
+          t: |-
+            The charger - a new 240 W unit from a different brand fails the same way. A fault limited to the barrel input - USB-C now fails too. The operating system - it happens in the firmware screen, with no OS loaded.
+        - b: What I know
+          t: |-
+            Resetting the embedded controller (battery disconnected, power held, reconnected) restored booting once, inconsistently. The battery reports the model string of a much older laptop while its design capacity matches this one. There is no visible heat damage around the power input.
+        - b: Two hypotheses still standing
+          t: |-
+            A degrading component on the power path shared by the barrel and USB-C inputs, possibly made worse by repeated failed power-ons; or an embedded-controller firmware problem negotiating power - which on its own does not explain the USB-C failure.
+      es:
+        tag: Electrónica · entrega de energía
+        items:
+        - b: Síntoma
+          t: |-
+            Conectar el cargador de 240 W apaga la laptop al instante - encendida, arrancando, incluso en la pantalla de configuración del firmware. En dos semanas progresó: dejó de arrancar solo con batería, y luego empezó a apagarse también alimentada por USB-C.
+        - b: Qué descarté
+          t: |-
+            El cargador - uno nuevo de 240 W de otra marca falla igual. Una falla limitada a la entrada de barril - ahora USB-C también falla. El sistema operativo - ocurre en la pantalla del firmware, sin sistema cargado.
+        - b: Qué sé
+          t: |-
+            Reiniciar el controlador embebido (batería desconectada, botón presionado, reconectar) devolvió el arranque una vez, de forma inconsistente. La batería reporta el modelo de una laptop mucho más vieja, aunque su capacidad de diseño coincide con esta. No hay daño visible por calor cerca de la entrada de energía.
+        - b: Dos hipótesis en pie
+          t: |-
+            Un componente degradándose en la ruta de energía que comparten el barril y el USB-C, quizás agravado por los intentos fallidos de encendido; o un problema del firmware del controlador embebido al negociar potencia - que por sí solo no explica la falla por USB-C.

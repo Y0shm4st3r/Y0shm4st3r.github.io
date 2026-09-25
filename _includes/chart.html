@@ -1,0 +1,19 @@
+{%- comment -%} Gráfico de barras horizontal. Datos en _data/charts/<id>.yml; lo dibuja assets/js/site.js. {%- endcomment -%}
+{%- assign c = site.data.charts[include.id] -%}{%- assign lang = include.lang -%}
+<div class="chart" data-bar="{{ include.id }}" data-lang="{{ lang }}">
+  <div class="chart-ttl">{{ c.title[lang] }}</div>
+  <p class="chart-sub">{% include inline.html v=c.sub lang=lang %}</p>
+  <div class="legend">
+    {%- for l in c.legend %}<span class="lg"><i style="background:var(--{{ l.series }})"></i>{{ l.label[lang] }}</span>{% endfor %}
+  </div>
+  <div class="rows"></div>
+  <div class="baseline"></div>
+  <div class="axis">{{ c.axis[lang] }}</div>
+  <button class="tbtn" type="button" aria-expanded="false" data-show="{{ site.data.ui.show_table[lang] }}" data-hide="{{ site.data.ui.hide_table[lang] }}">{{ site.data.ui.show_table[lang] }}</button>
+  <div class="tbl-wrap" hidden>
+    <table><thead><tr>
+      {%- for col in c.columns[lang] %}<th{% if forloop.index > 2 %} class="r"{% endif %}>{{ col }}</th>{% endfor -%}
+    </tr></thead><tbody></tbody></table>
+  </div>
+  <script type="application/json" class="chart-data">{{ c | jsonify }}</script>
+</div>

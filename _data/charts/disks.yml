@@ -1,0 +1,165 @@
+# Datos de un gráfico de barras. value = largo de la barra (escala 0..max).
+# cells = columnas de la tabla accesible después del nombre; usa {en, es} si el texto cambia por idioma.
+
+title:
+  en: Rate of decay, not accumulated count
+  es: Velocidad de deterioro, no cantidad acumulada
+sub:
+  en: |-
+    Defects per 1,000 power-on hours. Each disk's absolute count sits under its name - the chart's order does not match the order of those numbers.
+  es: |-
+    Defectos por cada 1000 horas de encendido. El conteo absoluto de cada disco aparece bajo su nombre: el orden del gráfico no coincide con el orden de esos números.
+legend:
+- series: s1
+  label:
+    en: Primary pool (double parity)
+    es: Pool primario (doble paridad)
+- series: s2
+  label:
+    en: Striped pool (no redundancy)
+    es: Pool en franja (sin redundancia)
+- series: s3
+  label:
+    en: Mirrored pool
+    es: Pool en espejo
+axis:
+  en: defects per 1,000 power-on hours - scale 0 to 35
+  es: defectos por 1000 horas de encendido - escala 0 a 35
+columns:
+  en:
+  - Disk
+  - Pool
+  - Hours
+  - Defects
+  - Per 1,000 h
+  es:
+  - Disco
+  - Pool
+  - Horas
+  - Defectos
+  - Por 1000 h
+hide:
+  en: Hide data table
+  es: Ocultar tabla de datos
+max: 35
+rows:
+- series: s1
+  value: 26.5
+  label: '26.5'
+  name:
+    en: Primary · 3
+    es: Primario · 3
+  sub:
+    en: 190 defects
+    es: 190 defectos
+  cells:
+  - en: Primary pool
+    es: Pool primario
+  - '7,167'
+  - '190'
+  - '26.50'
+- series: s2
+  value: 32.5
+  label: '32.5'
+  name:
+    en: Striped · 2
+    es: Franja · 2
+  sub:
+    en: 1,947 defects
+    es: 1947 defectos
+  cells:
+  - en: Striped pool
+    es: Pool en franja
+  - '59,960'
+  - '1,947'
+  - '32.50'
+- series: s2
+  value: 13.2
+  label: '13.2'
+  name:
+    en: Striped · 1
+    es: Franja · 1
+  sub:
+    en: 820 defects
+    es: 820 defectos
+  cells:
+  - en: Striped pool
+    es: Pool en franja
+  - '62,172'
+  - '820'
+  - '13.20'
+- series: s1
+  value: 11.9
+  label: '11.9'
+  name:
+    en: Primary · 4
+    es: Primario · 4
+  sub:
+    en: 83 defects
+    es: 83 defectos
+  cells:
+  - en: Primary pool
+    es: Pool primario
+  - '6,960'
+  - '83'
+  - '11.90'
+- series: s3
+  value: 0.11
+  label: '0.11'
+  name:
+    en: Mirror · 1
+    es: Espejo · 1
+  sub:
+    en: 7 defects
+    es: 7 defectos
+  cells:
+  - en: Mirrored pool
+    es: Pool en espejo
+  - '62,420'
+  - '7'
+  - '0.11'
+- series: s3
+  value: 0.0
+  label: '0.0'
+  name:
+    en: Mirror · 2
+    es: Espejo · 2
+  sub:
+    en: 0 defects
+    es: 0 defectos
+  cells:
+  - en: Mirrored pool
+    es: Pool en espejo
+  - '62,414'
+  - '0'
+  - '0.00'
+- series: s1
+  value: 0.0
+  label: '0.0'
+  name:
+    en: Primary · 1
+    es: Primario · 1
+  sub:
+    en: 0 defects
+    es: 0 defectos
+  cells:
+  - en: Primary pool
+    es: Pool primario
+  - '7,146'
+  - '0'
+  - '0.00'
+- series: s1
+  value: 0.0
+  label: '0.0'
+  name:
+    en: Primary · 2
+    es: Primario · 2
+  sub:
+    en: 0 defects
+    es: 0 defectos
+  cells:
+  - en: Primary pool
+    es: Pool primario
+  - '6,960'
+  - '0'
+  - '0.00'

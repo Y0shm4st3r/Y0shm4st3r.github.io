@@ -1,0 +1,48 @@
+# ─────────────────────────────────────────────────────────────
+#  Configuración del sitio. Tras editar este archivo, Jekyll
+#  necesita reiniciarse (en local: Ctrl+C y volver a `jekyll serve`).
+# ─────────────────────────────────────────────────────────────
+title: Joshua García Nieves
+description: >-
+  Homelab, firmware and troubleshooting portfolio of a Computer Engineering student in Puerto Rico.
+author: Joshua García Nieves
+
+# Dominio público SIN barra final. Cambia solo si cambias de dominio.
+url: "https://yoshimaster.com"
+# Vacío si el sitio vive en la raíz del dominio (yoshimaster.com).
+# "/portfolio" si vive en yoshimaster.com/portfolio (repo llamado "portfolio").
+baseurl: ""
+
+languages: [en, es]
+
+links:
+  github: https://github.com/Y0shm4st3r
+  linkedin: https://www.linkedin.com/in/joshua-garcia-nieves
+  firmware_repo: https://github.com/Y0shm4st3r/ender3-mriscoc-12864-lcd
+  email: imjoshuagarcia1212@gmail.com
+  # Resume PÚBLICO (sin teléfono). La versión completa nunca entra a este repo.
+  resume:
+    en: /assets/cv/joshua-garcia-nieves-resume-en.pdf
+    es: /assets/cv/joshua-garcia-nieves-resume-es.pdf
+
+# Orden del menú superior.
+nav:
+  - { href: /homelab/, en: Homelab, es: Homelab }
+  - { href: /ender3/, en: 3D printer, es: Impresora 3D }
+  - { href: /troubleshooting/, en: Troubleshooting, es: Troubleshooting }
+
+plugins:
+  - jekyll-sitemap
+
+markdown: kramdown
+kramdown:
+  smart_quotes: ["apos", "apos", "quot", "quot"]   # comillas rectas: igual que el texto original
+
+exclude:
+  - README.md
+  - LICENSE
+  - docs/
+  - tools/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/

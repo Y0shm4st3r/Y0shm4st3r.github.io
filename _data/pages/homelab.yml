@@ -1,0 +1,226 @@
+# Contenido de la página. Cada texto va en inglés (en) y español (es).
+# Guía de edición: docs/GUIA (PDF) · sección "Editar texto".
+
+mast:
+  eyebrow:
+    en: Homelab · Puerto Rico
+    es: Homelab · Puerto Rico
+  h1:
+    en: Megaman<br>Homelab
+    es: Homelab<br>Megaman
+  thesis:
+    en: |-
+      Production home infrastructure, run with engineering discipline: measure before acting, document afterwards.
+    es: |-
+      Infraestructura doméstica de producción, operada con criterio de ingeniería: se mide antes de actuar y se documenta después.
+  kpis:
+  - v: '2'
+    l:
+      en: Hypervisors
+      es: Hipervisores
+  - v: '4'
+    l:
+      en: Segmented VLANs
+      es: VLANs segmentadas
+  - v: 28 TB
+    l:
+      en: Raw across 3 ZFS pools
+      es: Crudos en 3 pools ZFS
+  - v: ~22
+    l:
+      en: Services in production
+      es: Servicios en producción
+sections:
+- id: the-system
+  snum:
+    en: 01 - The system
+    es: 01 - El sistema
+  h2:
+    en: A lab that isn't allowed to go down
+    es: Un laboratorio que no puede fallar
+  blocks:
+  - p:
+      en: |-
+        This homelab has one constraint that changes everything: **my family depends on it**. It holds the household's photos, the media server, the security cameras and the internet routing. There is no maintenance window and no "it's just a lab" excuse. Every architectural decision has to survive a 3 AM power outage with nobody awake to babysit it.
+      es: |-
+        Este homelab tiene una restricción que lo cambia todo: **mi familia depende de él**. Es donde viven las fotos de la casa, el servidor de medios, las cámaras de seguridad y el enrutamiento de internet. No hay ventana de mantenimiento ni excusa de "es solo un laboratorio". Cada decisión de arquitectura tiene que sobrevivir a un apagón a las tres de la mañana sin que nadie esté despierto para atenderla.
+  - p:
+      en: |-
+        That constraint is exactly what makes it a good place to practice. I learn networking, storage and virtualization on a system where the consequences are real, and that forces me to reason in terms of failure domains instead of just stacking up services.
+      es: |-
+        Esa restricción es justamente lo que lo hace un buen campo de práctica. Aprendo redes, almacenamiento y virtualización sobre un sistema donde las consecuencias son reales, y eso obliga a razonar en términos de dominios de fallo en lugar de acumular servicios.
+  - fig:
+      svg: homelab-1
+      head:
+        en: Architecture - 802.1Q segmentation and failure-domain separation
+        es: Arquitectura - segmentación 802.1Q y separación de dominios
+  - figcap:
+      en: |-
+        **The architectural decision I defend most:** the virtualized router runs on a different hypervisor from compute and storage. If it lived on the same box, shutting down the file server would take the house offline, and rebooting the network would leave storage without clients. Separating failure domains costs one extra machine and removes an entire circular dependency.
+      es: |-
+        **La decisión de arquitectura que más defiendo:** el router virtualizado corre en un hipervisor distinto al de cómputo y almacenamiento. Si viviera en el mismo, apagar el servidor de archivos dejaría la casa sin internet, y reiniciar la red dejaría al almacenamiento sin clientes. Separar dominios de fallo cuesta un equipo más y elimina una dependencia circular completa.
+- id: four-real-problems
+  snum:
+    en: 02 - Four real problems
+    es: 02 - Cuatro problemas reales
+  h2:
+    en: What I learned solving them
+    es: Lo que aprendí resolviéndolos
+  blocks:
+  - case:
+      en:
+        tag: Case 01 · Data analysis
+        h3: An absolute number misled me for months
+        items:
+        - b: Problem
+          t: |-
+            My disks reported very different counts of reallocated sectors. For months I prioritized replacement by the highest number, which seemed obvious.
+        - b: What I measured
+          t: |-
+            I pulled not just the defect count from each disk but also its power-on hours, and divided one by the other to get a *rate*: defects per 1,000 hours of life.
+        - chart: disks
+        - b: What I found
+          t: |-
+            The disk with **190 defects** is degrading faster than the one with **1,947**. The second took seven years to get there; the first has been running ten months. And the fast one sits in the production pool - the one holding the family's photos - not in the accept-the-risk pool where I thought my problem was.
+        - b: What I ruled out
+          t: |-
+            I checked whether the cause was environmental: temperature, power cycles, age. The hottest disk in the fleet has zero defects, and the two with the most power cycles are the healthiest. Four units from the same batch, same hours, same chassis: two flawless and two degrading. That's unit variation, not environment - so the answer is replace the drive, not redesign the cooling.
+        lesson: |-
+          A number without its denominator isn't data, it's an impression. The same figure can mean "damaged once years ago and stable since" or "dying right now," and only the divisor tells them apart.
+      es:
+        tag: Caso 01 · Análisis de datos
+        h3: Un número absoluto me mintió durante meses
+        items:
+        - b: Problema
+          t: |-
+            Tenía discos con conteos muy distintos de sectores reasignados. Durante meses prioricé el reemplazo por el número más alto, que parecía lo obvio.
+        - b: Qué medí
+          t: |-
+            Extraje de cada disco no solo los defectos sino también las horas de encendido, y dividí uno entre otro para obtener una *tasa*: defectos por cada 1000 horas de vida.
+        - chart: disks
+        - b: Qué encontré
+          t: |-
+            El disco con **190 defectos** se deteriora más rápido que el de **1947**. El segundo tardó siete años en llegar ahí; el primero lleva diez meses. Y el rápido estaba en el pool de producción, el que guarda las fotos de la familia - no en el pool de riesgo aceptado, donde yo creía tener el problema.
+        - b: Qué descarté
+          t: |-
+            Verifiqué si la causa era ambiental: temperatura, ciclos de encendido, antigüedad. El disco más caliente de toda la flota tiene cero defectos, y los dos con más ciclos de encendido son los más sanos. Cuatro unidades del mismo lote, las mismas horas y el mismo chasis: dos impecables y dos deteriorándose. Es variación de unidad, no del entorno - así que la respuesta es reemplazar, no rediseñar la refrigeración.
+        lesson: |-
+          Un número sin su denominador no es un dato, es una impresión. La misma cifra puede significar "se dañó una vez hace años y se estabilizó" o "se está muriendo ahora", y solo el divisor lo distingue.
+  - case:
+      en:
+        tag: Case 02 · Operational risk
+        h3: If a disk failed, I didn't know which one to pull
+        items:
+        - b: Problem
+          t: |-
+            The filesystem identified its members by internal identifiers, and the OS by letters the kernel reassigns on every boot. Neither pointed at a specific physical drive. On top of that, a motherboard limitation keeps the storage controller out of passthrough, so the NAS sees identifiers invented by the hypervisor rather than the manufacturer's.
+        - b: Why it matters
+          t: |-
+            One of the pools has no redundancy. Opening the wrong bay there isn't a scare - it's losing the whole pool. And I found that two different configurations of the same NAS mapped the same disks to different slots, so the slot number alone was a false lead.
+        - b: What I did
+          t: |-
+            I rebuilt the full identity chain for all eight disks: filesystem identifier → virtual slot → manufacturer's world-wide name → serial number → physical position. I froze it in a versioned document and adopted the rule of never operating on a device letter.
+        lesson: |-
+          An identifier that changes between reboots identifies nothing. Before automating or intervening, make sure the name you're using always points at the same physical object.
+      es:
+        tag: Caso 02 · Riesgo operativo
+        h3: Si un disco fallaba, no sabía cuál sacar
+        items:
+        - b: Problema
+          t: |-
+            El sistema de archivos identificaba a sus miembros con identificadores internos, y el sistema operativo con letras que el kernel reasigna en cada arranque. Ninguno de los dos apuntaba a un disco físico concreto. Encima, por una limitación de la placa base, la controladora no está en passthrough: el NAS ve identificadores inventados por el hipervisor, no los del fabricante.
+        - b: Por qué importa
+          t: |-
+            Uno de los pools no tiene redundancia. Abrir la bandeja equivocada ahí no es un susto: es perder el pool completo. Y descubrí que dos configuraciones distintas del mismo NAS asignaban los mismos discos a ranuras diferentes, así que el número de ranura por sí solo era una pista falsa.
+        - b: Qué hice
+          t: |-
+            Reconstruí la cadena completa de identidad para los ocho discos: identificador del sistema de archivos → ranura virtual → identificador mundial del fabricante → número de serie → posición física. La congelé en un documento versionado y adopté la regla de no operar nunca sobre la letra del dispositivo.
+        lesson: |-
+          Un identificador que cambia entre reinicios no identifica nada. Antes de automatizar o de intervenir, hay que asegurarse de que el nombre que usas apunte siempre al mismo objeto físico.
+  - case:
+      en:
+        tag: Case 03 · Method
+        h3: I tested my own hypothesis and I was wrong
+        items:
+        - b: Suspicion
+          t: |-
+            I believed the UPS shutdown system had a race condition - that the battery cut power before the server finished shutting down, abusing the disks on every outage.
+        - b: How I tested it
+          t: |-
+            Instead of "fixing" it, I measured it. I pulled the full sequence of three real outages from the system logs, with timestamps. The virtual machines shut down first, one after another, each with a clean close, and the host follows. The whole sequence takes about 50 seconds against the 180 the configured threshold guarantees.
+        - b: Result
+          t: |-
+            The hypothesis was false. And when I cross-checked disk degradation against power-cycle counts, that correlation didn't appear either: the disks with the most outages are the healthiest ones.
+        - b: The second time
+          t: |-
+            Shortly after, I concluded the UPS battery was degrading, because runtime had dropped from 22 minutes to 14. I was wrong again: I had plugged my workstation into the same UPS. More load, less runtime - and with lead-acid the drop isn't even proportional. The battery was fine. Since then I never record a runtime figure without recording the load next to it.
+        lesson: |-
+          A reasonable suspicion is not a diagnosis. I'd rather kill my own theory with data than change a setting that may never have been wrong - measuring costs far less than fixing what wasn't broken.
+      es:
+        tag: Caso 03 · Método
+        h3: Probé mi propia hipótesis y estaba equivocada
+        items:
+        - b: Sospecha
+          t: |-
+            Creí que el sistema de apagado por UPS tenía una condición de carrera: que la batería cortaba la corriente antes de que el servidor terminara de apagarse, maltratando los discos en cada apagón.
+        - b: Cómo la probé
+          t: |-
+            En vez de "arreglarla", la medí. Saqué de los registros del sistema la secuencia completa de tres apagones reales, con marcas de tiempo. Las máquinas virtuales se apagan primero, una tras otra, cada una con cierre limpio, y el host cae después. La secuencia entera toma unos 50 segundos contra los 180 que garantiza el umbral configurado.
+        - b: Resultado
+          t: |-
+            La hipótesis era falsa. Y al contrastar el deterioro de los discos contra su número de ciclos de encendido, la correlación tampoco aparecía: los discos con más apagones son los más sanos.
+        - b: La segunda vez
+          t: |-
+            Poco después concluí que la batería del UPS se estaba degradando, porque la autonomía había bajado de 22 a 14 minutos. También estaba equivocado: había conectado mi estación de trabajo al mismo UPS. Más carga, menos autonomía - y en plomo-ácido la caída ni siquiera es proporcional. La batería estaba intacta. Desde entonces nunca anoto un tiempo de autonomía sin anotar la carga al lado.
+        lesson: |-
+          Una sospecha razonable no es un diagnóstico. Prefiero descartar mi propia teoría con datos que cambiar una configuración que quizá nunca estuvo mal - el costo de medir es mucho menor que el de arreglar lo que no estaba roto.
+  - case:
+      en:
+        tag: Case 04 · Network security
+        h3: I isolated what I can't audit
+        items:
+        - b: Problem
+          t: |-
+            IP cameras are the least trustworthy device on any home network: closed firmware, sparse updates, and an attack surface I can't review.
+        - b: Design
+          t: |-
+            I put them on their own VLAN with 802.1Q tagging and wrote explicit rules: they may speak *only* RTSP to the video server, and nothing else. No internet egress, no access to the home network. Everything else is denied by default.
+        - b: What it cost me to learn
+          t: |-
+            Rules are evaluated first-match, top-down, and I learned it on the rule next door. The kill switch for my AI server sat in the wrong position and was missing its inverted destination, so it matched private networks instead of the internet and never blocked anything. The firewall's live log showed which rule each packet actually hit. Then I tested it the only way a kill switch can be tested: take the tunnel down on purpose and confirm the server gets no answer at all.
+        - b: Extension
+          t: |-
+            I applied the same criterion to egress: the AI server leaves through a policy-routed VPN tunnel, and if the tunnel drops it goes dark instead of falling back to the ISP. Home traffic exits directly. Segment by trust, not by convenience.
+        lesson: |-
+          Segmentation is damage containment, not paranoia. The question isn't whether a device will fail, but what it can reach when it does.
+      es:
+        tag: Caso 04 · Seguridad de red
+        h3: Aislé lo que no puedo auditar
+        items:
+        - b: Problema
+          t: |-
+            Las cámaras IP son el dispositivo menos confiable de cualquier red doméstica: firmware cerrado, actualizaciones escasas y una superficie de ataque que no puedo revisar.
+        - b: Diseño
+          t: |-
+            Las puse en su propia VLAN con etiquetado 802.1Q y escribí reglas explícitas: pueden hablar *solo* por RTSP hacia el servidor de video, y nada más. Sin salida a internet y sin acceso a la red de la casa. El resto del tráfico se deniega por defecto.
+        - b: Lo que me costó aprender
+          t: |-
+            Las reglas se evalúan por primera coincidencia, de arriba hacia abajo, y lo aprendí en la regla de al lado. El kill switch de mi servidor de IA estaba en la posición equivocada y le faltaba invertir el destino, así que coincidía con las redes privadas en vez de internet y nunca bloqueaba nada. El registro en vivo del firewall mostró qué regla tocaba cada paquete de verdad. Después lo probé de la única forma en que se prueba un kill switch: tumbar el túnel a propósito y confirmar que el servidor no recibe respuesta alguna.
+        - b: Extensión
+          t: |-
+            Apliqué el mismo criterio a la salida: el servidor de IA sale por un túnel VPN con enrutamiento por política, y si el túnel cae se queda sin salida en vez de volver al proveedor. El tráfico de la casa sale directo. Segmentar por confianza, no por conveniencia.
+        lesson: |-
+          Segmentación es contención de daño, no paranoia. La pregunta no es si un dispositivo va a fallar, sino qué alcanza cuando falle.
+- id: still-open
+  snum:
+    en: 03 - Still open
+    es: 03 - Sigue abierto
+  h2:
+    en: I know what's missing
+    es: Conozco lo que falta
+  blocks:
+  - p:
+      en: |-
+        The two open fronts are automating virtual-machine backups and migrating a pool that has no redundancy. Both are documented with their prioritization criteria and a plan. Knowing what's incomplete and why it isn't yet the priority is part of the job.
+      es: |-
+        Los dos frentes abiertos son automatizar los respaldos de las máquinas virtuales y migrar un pool sin redundancia. Ambos están documentados con su criterio de priorización y su plan. Saber qué está incompleto y por qué todavía no es prioridad también es parte del trabajo.

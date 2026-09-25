@@ -1,0 +1,69 @@
+<svg aria-label="Architecture diagram: internet, managed switch, network node with virtualized firewall, four VLANs, and a compute and storage node" role="img" viewbox="0 0 900 636">
+<defs>
+<marker id="ea" markerheight="7" markerwidth="7" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0,0 L10,5 L0,10 z" fill="var(--rule)"></path></marker>
+<marker id="eb" markerheight="7" markerwidth="7" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"></path></marker>
+</defs>
+<rect fill="var(--surface-2)" height="42" rx="21" stroke="var(--rule)" width="200" x="350" y="14"></rect>
+<text class="d-t" text-anchor="middle" x="450" y="40">Internet (ISP)</text>
+<line marker-end="url(#ea)" stroke="var(--rule)" x1="450" x2="450" y1="56" y2="84"></line>
+<rect fill="var(--surface)" height="66" rx="6" stroke="var(--accent)" stroke-width="1.5" width="820" x="40" y="84"></rect>
+<text class="d-t" x="60" y="112">Managed switch</text>
+<text class="d-s" x="186" y="112">802.1Q switching in hardware · per-port tagging</text>
+<text class="d-s" x="60" y="132">Ports assigned by VLAN · management restricted to its own segment</text>
+<path d="M120 150 L120 186 L450 186 L450 214" fill="none" marker-end="url(#eb)" marker-start="url(#eb)" stroke="var(--accent)" stroke-width="2"></path>
+<text class="d-a" x="462" y="182">trunk link - all four VLANs tagged (router-on-a-stick)</text>
+<rect fill="var(--surface)" height="104" rx="6" stroke="var(--rule)" width="460" x="220" y="214"></rect>
+<text class="d-t" x="240" y="240">Network node</text>
+<text class="d-s" x="336" y="240">dedicated hypervisor · separate hardware</text>
+<rect fill="var(--accent-soft)" height="50" rx="4" stroke="var(--accent)" width="420" x="240" y="252"></rect>
+<text class="d-t" x="256" y="272">Virtualized firewall / router</text>
+<text class="d-s" x="256" y="290">inter-VLAN rules · DHCP · NAT · policy-routed WireGuard tunnel</text>
+<line stroke="var(--rule)" x1="450" x2="450" y1="318" y2="346"></line>
+<line stroke="var(--rule)" x1="130" x2="770" y1="346" y2="346"></line>
+<line marker-end="url(#ea)" stroke="var(--rule)" x1="130" x2="130" y1="346" y2="372"></line>
+<line marker-end="url(#ea)" stroke="var(--rule)" x1="343" x2="343" y1="346" y2="372"></line>
+<line marker-end="url(#ea)" stroke="var(--rule)" x1="556" x2="556" y1="346" y2="372"></line>
+<line marker-end="url(#ea)" stroke="var(--rule)" x1="770" x2="770" y1="346" y2="372"></line>
+<g>
+<rect fill="var(--surface)" height="84" rx="5" stroke="var(--grid)" width="180" x="40" y="372"></rect>
+<text class="d-t" x="58" y="396">VLAN · WAN</text>
+<text class="d-s" x="58" y="416">Carrier uplink, isolated</text>
+<text class="d-s" x="58" y="432">from the rest of the</text>
+<text class="d-s" x="58" y="448">internal network</text>
+</g>
+<g>
+<rect fill="var(--surface)" height="84" rx="5" stroke="var(--accent)" width="180" x="253" y="372"></rect>
+<text class="d-t" x="271" y="396">VLAN · Servers</text>
+<text class="d-s" x="271" y="416">Hypervisors, NAS and</text>
+<text class="d-s" x="271" y="432">services. AI server</text>
+<text class="d-s" x="271" y="448">via VPN + kill switch</text>
+</g>
+<g>
+<rect fill="var(--surface)" height="84" rx="5" stroke="var(--grid)" width="180" x="466" y="372"></rect>
+<text class="d-t" x="484" y="396">VLAN · Home</text>
+<text class="d-s" x="484" y="416">Personal devices, WiFi</text>
+<text class="d-s" x="484" y="432">and console.</text>
+<text class="d-s" x="484" y="448">Direct egress</text>
+</g>
+<g>
+<rect fill="var(--surface)" height="84" rx="5" stroke="var(--grid)" width="180" x="680" y="372"></rect>
+<text class="d-t" x="698" y="396">VLAN · Cameras</text>
+<text class="d-s" x="698" y="416">No internet. RTSP to</text>
+<text class="d-s" x="698" y="432">the video server and</text>
+<text class="d-s" x="698" y="448">nothing else</text>
+</g>
+<line marker-end="url(#ea)" stroke="var(--rule)" x1="343" x2="343" y1="456" y2="486"></line>
+<rect fill="var(--surface)" height="134" rx="6" stroke="var(--rule)" width="600" x="150" y="486"></rect>
+<text class="d-t" x="170" y="512">Compute and storage node</text>
+<text class="d-s" x="404" y="512">hypervisor separate from routing</text>
+<rect fill="var(--surface-2)" height="78" rx="4" stroke="var(--grid)" width="270" x="170" y="526"></rect>
+<text class="d-t" x="186" y="548">Virtualized NAS</text>
+<text class="d-s" x="186" y="566">3 ZFS pools: double parity,</text>
+<text class="d-s" x="186" y="582">mirror and stripe. Exported</text>
+<text class="d-s" x="186" y="598">over NFS to the apps</text>
+<rect fill="var(--surface-2)" height="78" rx="4" stroke="var(--grid)" width="270" x="460" y="526"></rect>
+<text class="d-t" x="476" y="548">Application node</text>
+<text class="d-s" x="476" y="566">~22 containers. Dedicated</text>
+<text class="d-s" x="476" y="582">GPU over PCIe for vision</text>
+<text class="d-s" x="476" y="598">and local models</text>
+</svg>

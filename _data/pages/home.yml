@@ -1,0 +1,203 @@
+# Página de inicio. Cada texto va en inglés (en) y español (es).
+# projects: las tarjetas que llevan a cada sección. method y stack: compartidos por todo el sitio.
+
+mast:
+  eyebrow:
+    en: Computer Engineering · Puerto Rico
+    es: Ingeniería de Computadoras · Puerto Rico
+  h1:
+    en: Joshua<br>García Nieves
+    es: Joshua<br>García Nieves
+  thesis:
+    en: |-
+      I run my home's infrastructure like production, rebuild machines from the firmware up, and write down what broke - including when it was me.
+    es: |-
+      Opero la infraestructura de mi casa como si fuera producción, reconstruyo máquinas desde el firmware y documento lo que se rompió, incluso cuando el error fue mío.
+  byline:
+    en: Computer Engineering student, UAGM Gurabo · Self-taught in IT, networking and electronics · Currently focused on Python
+    es: Estudiante de Ingeniería de Computadoras, UAGM Gurabo · Autodidacta en IT, redes y electrónica · Actualmente enfocado en Python
+
+intro:
+  snum:
+    en: 01 - The work
+    es: 01 - El trabajo
+  h2:
+    en: Three projects, one way of working
+    es: Tres proyectos, una misma forma de trabajar
+  p:
+    en: |-
+      Each section below is a real system I built or maintain, written up the way I would hand it to a teammate: what the problem was, what I measured, what I ruled out, and what is still open. Every number on these pages came from the machine, not from memory.
+    es: |-
+      Cada sección es un sistema real que construí o mantengo, escrito como se lo entregaría a un compañero de equipo: cuál era el problema, qué medí, qué descarté y qué sigue abierto. Cada número de estas páginas salió de la máquina, no de la memoria.
+
+projects:
+  - href: /homelab/
+    eyebrow:
+      en: Infrastructure · Networking · Storage
+      es: Infraestructura · Redes · Almacenamiento
+    title:
+      en: A homelab that isn't allowed to go down
+      es: Un homelab que no puede caerse
+    blurb:
+      en: |-
+        Household production on two hypervisors: segmented network, virtualized firewall, three ZFS pools and about twenty services. Four cases where a measurement changed the decision.
+      es: |-
+        Producción doméstica en dos hipervisores: red segmentada, firewall virtualizado, tres pools ZFS y unos veinte servicios. Cuatro casos donde una medición cambió la decisión.
+    stats:
+      - v: '4'
+        l: { en: VLANs, es: VLANs }
+      - v: '3'
+        l: { en: ZFS pools, es: pools ZFS }
+      - v: '~22'
+        l: { en: services, es: servicios }
+  - href: /ender3/
+    eyebrow:
+      en: Firmware · Electronics · Metrology
+      es: Firmware · Electrónica · Metrología
+    title:
+      en: A 3D printer rebuilt from the firmware up
+      es: Una impresora 3D reconstruida desde el firmware
+    blurb:
+      en: |-
+        A consumer printer changed across three layers, with a firmware build I can reproduce from two files. A 1.938 mm bed error that turned out to be 0.163 mm of real problem.
+      es: |-
+        Una impresora de consumo modificada en tres capas, con un firmware que puedo reproducir desde dos archivos. Un error de cama de 1.938 mm que resultó ser 0.163 mm de problema real.
+    stats:
+      - v: '12'
+        l: { en: config lines, es: líneas de config }
+      - v: '0.180'
+        l: { en: mm mesh range, es: mm de rango }
+      - v: '22×'
+        l: { en: less tilt, es: menos inclinación }
+  - href: /troubleshooting/
+    eyebrow:
+      en: Postmortems · Linux · Networking
+      es: Postmortems · Linux · Redes
+    title:
+      en: Where it broke
+      es: Dónde se rompió
+    blurb:
+      en: |-
+        Every failure I logged across my network, homelab and Linux machines, tagged by where it showed up and where the cause really was - including the ones I never solved.
+      es: |-
+        Cada falla que registré en mi red, mi homelab y mis máquinas Linux, etiquetada por dónde apareció y dónde estaba la causa de verdad, incluidas las que nunca resolví.
+    stats:
+      - v: 'auto:total'
+        l: { en: incidents, es: incidentes }
+      - v: 'auto:crossed'
+        l: { en: crossed layers, es: cruzaron de capa }
+      - v: 'auto:open'
+        l: { en: still open, es: siguen abiertos }
+
+method:
+  snum:
+    en: 02 - Method
+    es: 02 - Método
+  h2:
+    en: How I work
+    es: Cómo trabajo
+  items:
+    - h:
+        en: I measure before I act
+        es: Mido antes de actuar
+      p:
+        en: |-
+          Every case on this site started with a measurement, not a configuration change. Several of them ended up proving me wrong, and that is a result too.
+        es: |-
+          Cada caso de este sitio empezó con una medición, no con un cambio de configuración. Varios terminaron demostrando que yo estaba equivocado, y eso también es un resultado.
+    - h:
+        en: I decompose before I replace
+        es: Descompongo antes de reemplazar
+      p:
+        en: |-
+          A summary number hides its parts. Splitting defects by hours, or a bed error into tilt and residual, turned an expensive purchase into a free adjustment more than once.
+        es: |-
+          Un número resumen esconde sus partes. Dividir defectos entre horas, o un error de cama en inclinación y residuo, convirtió más de una vez una compra cara en un ajuste gratis.
+    - h:
+        en: I verify state, not responses
+        es: Verifico estado, no respuestas
+      p:
+        en: |-
+          An "ok" means a message was accepted. A kill switch is only tested by taking the tunnel down; a saved setting is only real once I read it back.
+        es: |-
+          Un "ok" significa que el mensaje se aceptó. Un kill switch solo se prueba tumbando el túnel; un ajuste guardado solo es real cuando lo leo de vuelta.
+    - h:
+        en: I use identifiers that don't move
+        es: Uso identificadores que no cambian
+      p:
+        en: |-
+          Disks by world-wide name and serial, firmware by the build timestamp the machine reports. A name that changes between reboots identifies nothing.
+        es: |-
+          Discos por su WWN y número de serie, firmware por la fecha de compilación que reporta la máquina. Un nombre que cambia entre reinicios no identifica nada.
+    - h:
+        en: I separate failure domains
+        es: Separo dominios de fallo
+      p:
+        en: |-
+          Routing, compute and storage live on different hardware on purpose. It is the principle that has most often kept one problem from becoming two.
+        es: |-
+          Enrutamiento, cómputo y almacenamiento viven en hardware distinto a propósito. Es el principio que más veces ha evitado que un problema se convierta en dos.
+    - h:
+        en: I write my mistakes down with names
+        es: Escribo mis errores con nombre propio
+      p:
+        en: |-
+          Wrong hypotheses stay in the documentation next to the data that killed them. Those are the entries I actually re-read.
+        es: |-
+          Las hipótesis equivocadas se quedan en la documentación junto a los datos que las descartaron. Son las entradas que de verdad vuelvo a leer.
+    - h:
+        en: I reason through physical analogies
+        es: Razono con analogías físicas
+      p:
+        en: |-
+          A shared trunk is a hydraulic bottleneck, RAID parity is spare thread on a bolt, a warped plate is not fixed by shimming. The analogy is how I decide between an adjustment and a replacement.
+        es: |-
+          Un enlace troncal compartido es un cuello de botella hidráulico, la paridad de un arreglo son hilos de rosca de reserva, una placa pandeada no se arregla con cuñas. La analogía es cómo decido entre ajustar y reemplazar.
+    - h:
+        en: I rank open work by the cost of failure
+        es: Priorizo lo pendiente por el costo del fallo
+      p:
+        en: |-
+          Each project ends with what is still open, ordered by what it costs if it fails - not by how easy it is to close.
+        es: |-
+          Cada proyecto termina con lo que sigue abierto, ordenado por lo que cuesta si falla, no por lo fácil que es cerrarlo.
+
+stack:
+  snum:
+    en: 03 - Technologies
+    es: 03 - Tecnologías
+  h2:
+    en: Stack
+    es: Stack
+  groups:
+    - l: { en: Virtualization & storage, es: Virtualización y almacenamiento }
+      chips: [Proxmox VE, KVM / QEMU, LXC, PCIe passthrough, ZFS, TrueNAS SCALE, NFS, SMART / smartd]
+    - l: { en: Networking, es: Redes }
+      chips: [802.1Q VLAN, OPNsense, RouterOS, Policy-based routing, NAT · firewall, WireGuard, Tailscale, DHCP · DNS]
+    - l: { en: Services & observability, es: Servicios y observabilidad }
+      chips: [Docker Compose, Immich, Jellyfin, Frigate, Ollama, Netdata, Uptime Kuma, NUT (UPS)]
+    - l: { en: Firmware & electronics, es: Firmware y electrónica }
+      chips: [Marlin 2.1.4, PlatformIO, STM32 (Cortex-M3), G-code, BLTouch, {en: UART over USB, es: UART sobre USB}, {en: Soldering · continuity testing, es: Soldadura · prueba de continuidad}]
+    - l: { en: Analysis & design, es: Análisis y diseño }
+      chips: [{en: Least-squares plane fitting, es: Ajuste de plano por mínimos cuadrados}, {en: Residual analysis, es: Análisis de residuos}, {en: SHA-256 verification, es: Verificación SHA-256}, Fusion 360, OrcaSlicer]
+    - l: { en: Systems & tools, es: Sistemas y herramientas }
+      chips: [Linux (Debian · Arch), Bash, systemd, SSH, Git, Jekyll, {en: Python (learning), es: Python (aprendiendo)}]
+
+contact:
+  snum:
+    en: 04 - Contact
+    es: 04 - Contacto
+  h2:
+    en: Get in touch
+    es: Contacto
+  p:
+    en: |-
+      I'm looking for a summer internship or co-op in IT infrastructure, networking or systems while I finish my degree. The resume below leaves out my phone number; the full version, and detailed operational documentation for any of these systems, are available on request.
+    es: |-
+      Busco una práctica de verano o co-op en infraestructura de IT, redes o sistemas mientras termino mi bachillerato. El resumé de abajo no incluye mi teléfono; la versión completa y la documentación operativa detallada de cualquiera de estos sistemas están disponibles a solicitud.
+  resume:
+    en: Resume (PDF)
+    es: Resumé (PDF)
+  email:
+    en: Email
+    es: Email

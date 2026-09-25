@@ -1,0 +1,11 @@
+{%- assign lang = include.lang -%}
+<footer>
+  {%- if page.next %}
+  {%- assign nx = site.nav | where: 'href', page.next | first -%}
+  <a class="next" href="{{ page.next | relative_url }}"><span>{{ site.data.ui.next[lang] }}</span>{% if nx %}{{ nx[lang] }}{% else %}{{ site.data.ui.home[lang] }}{% endif %} →</a>
+  {%- endif %}
+  <div><b>{{ site.author }}</b> · Puerto Rico</div>
+  <div>{{ site.data.ui.footer_degree[lang] }}</div>
+  <div class="flinks"><a href="{{ site.links.github }}">GitHub</a> · <a href="{{ site.links.linkedin }}">LinkedIn</a> · <a href="mailto:{{ site.links.email }}">{{ site.links.email }}</a></div>
+  <div>{{ site.data.ui.footer_note[lang] }}</div>
+</footer>
