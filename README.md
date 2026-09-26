@@ -40,3 +40,11 @@ Operational documentation with those details lives in a separate private reposit
 ## License
 
 Code (templates, CSS, JS, scripts): MIT. Written content and diagrams: © Joshua García Nieves, all rights reserved.
+
+## How this was made
+
+The systems, measurements, incidents and decisions documented here are mine: I built the
+homelab, rebuilt the printer, and logged every failure. I used Claude (Anthropic) as an
+assistant to structure the site, write parts of the code, and edit the English prose.
+If something on these pages is unclear, ask me - I can walk through any case from the
+symptom up.
