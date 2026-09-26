@@ -94,10 +94,10 @@ sections:
             1.752 mm of that spread is a single tilt along X, 9.79 mm per metre. The part that is genuinely not flat is **0.163 mm peak-to-peak, σ 0.043 mm**, measured across 180 mm. The surface is fine. The way it is mounted is not.
         - b: What I ruled out
           t: |-
-            Buying a replacement build plate. It was the intuitive fix, it would have cost real money as a student, and it would have addressed roughly 8 % of the error. I also ruled out chasing the tilt with the levelling knobs alone, because the knobs and the gantry act on the same axis and I had no way yet to tell which one was contributing.
+            Buying a replacement build plate. It was the intuitive fix, it would have cost real money as a student, and it would have addressed at most about 8 % of the error. I also ruled out chasing the tilt with the levelling knobs alone, because the knobs and the gantry act on the same axis and I had no way yet to tell which one was contributing.
         - b: What happened when I acted on it
           t: |-
-            The decomposition made a testable prediction: levelling should remove the tilt and leave the residual alone. I equalised the two Z leadscrews by hand, re-trammed the corners, and probed twice. The range fell from 1.938 to **0.180 mm** and the X tilt from 9.79 to 0.44 mm/m - a 22× reduction. The residual went from 0.163 to 0.131 mm, and its map kept the same shape (**r = 0.965** against the one before). The tilt was mounting. The residual was the plate. The prediction held.
+            The decomposition made a testable prediction: levelling should remove the tilt and leave the residual alone. I equalised the two Z leadscrews by hand, re-trammed the corners, and probed twice. The range fell from 1.938 to **0.180 mm** and the X tilt from 9.79 to 0.44 mm/m - a 22× reduction. The residual went from 0.163 to 0.131 mm, and its map kept the same shape (**r = 0.965** against the one before). The tilt was mounting. The residual belongs to something levelling does not touch - the plate or the gantry itself; this test cannot tell which, and that question is still open. The prediction held.
         lesson: |-
           A table with one short leg still has a flat top - you shim it. A warped top is not fixed by shimming. The spread alone cannot tell you which one you have; separating the plane from the residual can, and it costs nothing but arithmetic.
       es:
@@ -116,10 +116,10 @@ sections:
             1.752 mm de esa diferencia son una sola inclinación en X, de 9.79 mm por metro. La parte que de verdad no es plana son **0.163 mm pico a pico, σ 0.043 mm**, medidos sobre 180 mm. La superficie está bien. El montaje no.
         - b: Qué descarté
           t: |-
-            Comprar una placa de vidrio nueva. Era el arreglo intuitivo, cuesta dinero real siendo estudiante, y habría atacado cerca del 8 % del error. También descarté perseguir la inclinación solo con las perillas, porque las perillas y el pórtico actúan sobre el mismo eje y todavía no tenía forma de saber cuál de los dos estaba aportando.
+            Comprar una placa de vidrio nueva. Era el arreglo intuitivo, cuesta dinero real siendo estudiante, y como mucho habría atacado cerca del 8 % del error. También descarté perseguir la inclinación solo con las perillas, porque las perillas y el pórtico actúan sobre el mismo eje y todavía no tenía forma de saber cuál de los dos estaba aportando.
         - b: Qué pasó cuando actué
           t: |-
-            La descomposición hacía una predicción comprobable: nivelar debía quitar la inclinación y dejar el residuo igual. Igualé a mano los dos husillos del Z, reajusté las esquinas y sondeé dos veces. El rango bajó de 1.938 a **0.180 mm** y la inclinación en X de 9.79 a 0.44 mm/m, 22 veces menos. El residuo pasó de 0.163 a 0.131 mm y su mapa mantuvo la misma forma (**r = 0.965** contra el anterior). La inclinación era el montaje. El residuo era la placa. La predicción se cumplió.
+            La descomposición hacía una predicción comprobable: nivelar debía quitar la inclinación y dejar el residuo igual. Igualé a mano los dos husillos del Z, reajusté las esquinas y sondeé dos veces. El rango bajó de 1.938 a **0.180 mm** y la inclinación en X de 9.79 a 0.44 mm/m, 22 veces menos. El residuo pasó de 0.163 a 0.131 mm y su mapa mantuvo la misma forma (**r = 0.965** contra el anterior). La inclinación era el montaje. El residuo pertenece a algo que nivelar no toca: la placa o el propio pórtico; esta prueba no distingue entre los dos, y esa pregunta sigue abierta. La predicción se cumplió.
         lesson: |-
           Una mesa con una pata corta sigue teniendo el tablero plano: se calza. Un tablero pandeado no se arregla calzando. El rango por sí solo no te dice cuál de las dos tienes; separar el plano del residuo sí, y no cuesta más que aritmética.
   - case:
