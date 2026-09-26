@@ -7,7 +7,7 @@ description: >-
   Homelab, firmware and troubleshooting portfolio of a Computer Engineering student in Puerto Rico.
 author: Joshua García Nieves
 
-# Dominio público SIN barra final. Cambia solo si cambias de dominio.
+# Cambia solo si cambias de dominio.
 url: "https://yoshimaster.com"
 # Vacío si el sitio vive en la raíz del dominio (yoshimaster.com).
 # "/portfolio" si vive en yoshimaster.com/portfolio (repo llamado "portfolio").
@@ -20,7 +20,7 @@ links:
   linkedin: https://www.linkedin.com/in/joshua-garcia-nieves
   firmware_repo: https://github.com/Y0shm4st3r/ender3-mriscoc-12864-lcd
   email: imjoshuagarcia1212@gmail.com
-  # Resume PÚBLICO (sin teléfono). La versión completa nunca entra a este repo.
+  # Resume PÚBLICO . La versión completa nunca entra a este repo.
   resume:
     en: /assets/cv/joshua-garcia-nieves-resume-en.pdf
     es: /assets/cv/joshua-garcia-nieves-resume-es.pdf
@@ -46,3 +46,8 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor/
+
+# Cloudflare Web Analytics. Pega aquí el token que te da Cloudflare (Web Analytics > Add a site).
+# Vacío = no se carga ningún script. Solo se activa en el build de producción (GitHub Pages).
+analytics:
+  cf_beacon: "94778576a25043fa82afcb8f7aa977dc"
