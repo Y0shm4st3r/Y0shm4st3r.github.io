@@ -10,9 +10,9 @@ mast:
     es: Homelab<br>Megaman
   thesis:
     en: |-
-      Production home infrastructure, run with engineering discipline: measure before acting, document afterwards.
+      Self-hosted infrastructure my household uses every day, run with engineering discipline: measure before acting, document afterwards.
     es: |-
-      Infraestructura doméstica de producción, operada con criterio de ingeniería: se mide antes de actuar y se documenta después.
+      Infraestructura self-hosted que mi casa usa a diario, operada con criterio de ingeniería: se mide antes de actuar y se documenta después.
   kpis:
   - v: '2'
     l:
@@ -28,8 +28,8 @@ mast:
       es: Crudos en 3 pools ZFS
   - v: ~22
     l:
-      en: Services in production
-      es: Servicios en producción
+      en: Services in daily use
+      es: Servicios en uso diario
 sections:
 - id: the-system
   snum:
@@ -81,7 +81,7 @@ sections:
         - chart: disks
         - b: What I found
           t: |-
-            The disk with **190 defects** is degrading faster than the one with **1,947**. The second took seven years to get there; the first has been running ten months. And the fast one sits in the production pool - the one holding the family's photos - not in the accept-the-risk pool where I thought my problem was.
+            The disk with **190 defects** is degrading faster than the one with **1,947**. The second took seven years to get there; the first has been running ten months. And the fast one sits in the main pool - the one holding the family's photos - not in the accept-the-risk pool where I thought my problem was.
         - b: What I ruled out
           t: |-
             I checked whether the cause was environmental: temperature, power cycles, age. The hottest disk in the fleet has zero defects, and the two with the most power cycles are the healthiest. Four units from the same batch, same hours, same chassis: two flawless and two degrading. That's unit variation, not environment - so the answer is replace the drive, not redesign the cooling.
@@ -100,7 +100,7 @@ sections:
         - chart: disks
         - b: Qué encontré
           t: |-
-            El disco con **190 defectos** se deteriora más rápido que el de **1947**. El segundo tardó siete años en llegar ahí; el primero lleva diez meses. Y el rápido estaba en el pool de producción, el que guarda las fotos de la familia - no en el pool de riesgo aceptado, donde yo creía tener el problema.
+            El disco con **190 defectos** se deteriora más rápido que el de **1947**. El segundo tardó siete años en llegar ahí; el primero lleva diez meses. Y el rápido estaba en el pool principal, el que guarda las fotos de la familia - no en el pool de riesgo aceptado, donde yo creía tener el problema.
         - b: Qué descarté
           t: |-
             Verifiqué si la causa era ambiental: temperatura, ciclos de encendido, antigüedad. El disco más caliente de toda la flota tiene cero defectos, y los dos con más ciclos de encendido son los más sanos. Cuatro unidades del mismo lote, las mismas horas y el mismo chasis: dos impecables y dos deteriorándose. Es variación de unidad, no del entorno - así que la respuesta es reemplazar, no rediseñar la refrigeración.

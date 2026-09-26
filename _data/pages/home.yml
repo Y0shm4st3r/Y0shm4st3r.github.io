@@ -3,19 +3,19 @@
 
 mast:
   eyebrow:
-    en: Computer Engineering · Puerto Rico
-    es: Ingeniería de Computadoras · Puerto Rico
+    en: Computer Engineering · Infrastructure, networking, systems
+    es: Ingeniería de Computadoras · Infraestructura, redes, sistemas
   h1:
     en: Joshua<br>García Nieves
     es: Joshua<br>García Nieves
   thesis:
     en: |-
-      I run my home's infrastructure like production, rebuild machines from the firmware up, and write down what broke - including when it was me.
+      I run the self-hosted infrastructure my household uses every day, rebuild machines from the firmware up, and write down what broke - including when it was me.
     es: |-
-      Opero la infraestructura de mi casa como si fuera producción, reconstruyo máquinas desde el firmware y documento lo que se rompió, incluso cuando el error fue mío.
+      Opero la infraestructura self-hosted que mi casa usa a diario, reconstruyo máquinas desde el firmware y documento lo que se rompió, incluso cuando el error fue mío.
   byline:
-    en: Computer Engineering student, UAGM Gurabo · Self-taught in IT, networking and electronics · Currently focused on Python
-    es: Estudiante de Ingeniería de Computadoras, UAGM Gurabo · Autodidacta en IT, redes y electrónica · Actualmente enfocado en Python
+    en: Second-year Computer Engineering student, UAGM Gurabo · Self-taught in IT, networking and electronics · Currently focused on Python
+    es: Estudiante de segundo año de Ingeniería de Computadoras, UAGM Gurabo · Autodidacta en IT, redes y electrónica · Actualmente enfocado en Python
 
 intro:
   snum:
@@ -40,9 +40,9 @@ projects:
       es: Un homelab que no puede caerse
     blurb:
       en: |-
-        Household production on two hypervisors: segmented network, virtualized firewall, three ZFS pools and about twenty services. Four cases where a measurement changed the decision.
+        Real household workloads on two hypervisors: segmented network, virtualized firewall, three ZFS pools and about twenty services. Four cases where a measurement changed the decision.
       es: |-
-        Producción doméstica en dos hipervisores: red segmentada, firewall virtualizado, tres pools ZFS y unos veinte servicios. Cuatro casos donde una medición cambió la decisión.
+        Servicios que la casa usa a diario, en dos hipervisores: red segmentada, firewall virtualizado, tres pools ZFS y unos veinte servicios. Cuatro casos donde una medición cambió la decisión.
     stats:
       - v: '4'
         l: { en: VLANs, es: VLANs }

@@ -1,6 +1,6 @@
 # yoshimaster.com - portfolio
 
-Source of my portfolio site: a production homelab, a 3D printer rebuilt from the firmware up, and a
+Source of my portfolio site: a self-hosted homelab my household uses every day, a 3D printer rebuilt from the firmware up, and a
 troubleshooting log of the failures I have worked through. English and Spanish on every page.
 
 **Live:** https://yoshimaster.com
