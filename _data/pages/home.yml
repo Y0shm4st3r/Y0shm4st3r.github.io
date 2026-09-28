@@ -87,7 +87,7 @@ projects:
       - v: 'auto:crossed'
         l: { en: crossed layers, es: cruzaron de capa }
       - v: 'auto:open'
-        l: { en: still open, es: siguen abiertos }
+        l: { en: open or abandoned, es: abiertos o abandonados }
 
 method:
   snum:

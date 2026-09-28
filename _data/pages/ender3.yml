@@ -116,7 +116,7 @@ sections:
             1.752 mm de esa diferencia son una sola inclinación en X, de 9.79 mm por metro. La parte que de verdad no es plana son **0.163 mm pico a pico, σ 0.043 mm**, medidos sobre 180 mm. La superficie está bien. El montaje no.
         - b: Qué descarté
           t: |-
-            Comprar una placa de vidrio nueva. Era el arreglo intuitivo, cuesta dinero real siendo estudiante, y como mucho habría atacado cerca del 8 % del error. También descarté perseguir la inclinación solo con las perillas, porque las perillas y el pórtico actúan sobre el mismo eje y todavía no tenía forma de saber cuál de los dos estaba aportando.
+            Comprar una placa de impresión nueva. Era el arreglo intuitivo, cuesta dinero real siendo estudiante, y como mucho habría atacado cerca del 8 % del error. También descarté perseguir la inclinación solo con las perillas, porque las perillas y el pórtico actúan sobre el mismo eje y todavía no tenía forma de saber cuál de los dos estaba aportando.
         - b: Qué pasó cuando actué
           t: |-
             La descomposición hacía una predicción comprobable: nivelar debía quitar la inclinación y dejar el residuo igual. Igualé a mano los dos husillos del Z, reajusté las esquinas y sondeé dos veces. El rango bajó de 1.938 a **0.180 mm** y la inclinación en X de 9.79 a 0.44 mm/m, 22 veces menos. El residuo pasó de 0.163 a 0.131 mm y su mapa mantuvo la misma forma (**r = 0.965** contra el anterior). La inclinación era el montaje. El residuo pertenece a algo que nivelar no toca: la placa o el propio pórtico; esta prueba no distingue entre los dos, y esa pregunta sigue abierta. La predicción se cumplió.
